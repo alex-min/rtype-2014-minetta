@@ -1,23 +1,28 @@
+INCLUDEPATH +=
+
+
 HEADERS += \
-    String.h \
-    Point.h \
-    Thread.h \
-    Singleton.h \
-    ScopedLock.h \
-    PThreadThread.h \
-    Pool.h \
-    Mutex.h \
-    CircularBuffer.h \
-    IThread.h \
-    IMutex.h \
-    PThreadMutex.h
+    $$PWD/String.h \
+    $$PWD/Point.h \
+    $$PWD/Thread.h \
+    $$PWD/Singleton.h \
+    $$PWD/ScopedLock.h \
+    $$PWD/PThreadThread.h \
+    $$PWD/Pool.h \
+    $$PWD/Mutex.h \
+    $$PWD/CircularBuffer.h \
+    $$PWD/IThread.h \
+    $$PWD/IMutex.h \
+    $$PWD/PThreadMutex.h
 
 SOURCES += \
-    String.cpp \
-    ScopedLock.cpp \
-    CircularBuffer.cpp \
-    PThreadThread.cpp \
-    PThreadMutex.cpp
+    $$PWD/String.cpp \
+    $$PWD/ScopedLock.cpp \
+    $$PWD/CircularBuffer.cpp \
+    $$PWD/PThreadThread.cpp \
+    $$PWD/PThreadMutex.cpp
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
+
+DEFINES += COMMON_MODULE
