@@ -1,0 +1,30 @@
+les .a uniquement dans le .pro
+option pour les noms en camlCase
+_ pour les attributs
+[ portabilite ]
+
+server:
+	- abstractipon thread
+	- plusieurs parties
+	- 
+
+
+client :
+       - SFML
+       
+
+
+other :
+      - protocol rfc en anglais
+      - demander a fred pour qt
+      - classe de gestion du temps
+      - fonction de deplacement
+      - tirs avec les fonctions
+      - fichier de map
+      
+
+[alex] - protocol udp (creation du protocol, [hugo] gestion de la reception, socket, abstraction proto)
+[val] - gestion des monstres (gestion des fonctions, tirs, dates de pop, vitesse de deplacement).
+[max] - gameplay (tir, deplacement, [joris] collisions, affichage (HUD) gestion du player,  1er -> boucle de jeu : evenment, gestion du temps, )
+[fred] - Creation des parties, gestion du gameplay cote serveur.
+
