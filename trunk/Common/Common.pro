@@ -14,8 +14,10 @@ HEADERS += \
 
 SOURCES += \
     String.cpp \
-    Main.cpp \
     ScopedLock.cpp \
     CircularBuffer.cpp \
     PThreadThread.cpp \
     PThreadMutex.cpp
+
+win32: DEFINES += OS_WINDOWS
+unix: DEFINES += OS_UNIX
