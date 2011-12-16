@@ -2,7 +2,7 @@
  * @file Object.h
  * @brief Object
  * @author joris profili
- * @date Fri Dec 16 15:15:26 2011
+ * @date Fri Dec 16 16:18:31 2011
  * 
  * Object
 */
@@ -67,7 +67,27 @@ template < typename T > class Object
   {
     return (_w);
   }
-  
+
+  bool	intersectWith(Object<T> obj)
+  {
+    std::cout << std::endl;
+    std::cout << "checkIntersect..." << std::endl;
+    
+    if (obj.getX() > (_x + _w))
+      return (false);
+    
+    if ((obj.getX() + obj.getW()) < _x)
+      return (false);
+
+    if (obj.getY() > (_y + _h))
+      return (false);
+
+    if ((obj.getY() + obj.getH()) < _y)
+      return (false);
+
+    return (true);
+  }
+
   ~Object()
     {
 
