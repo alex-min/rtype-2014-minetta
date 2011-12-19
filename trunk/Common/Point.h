@@ -7,6 +7,8 @@
  * Point
 */
 
+#include <iostream>
+
 template < typename T> class Point
 {
  public:
@@ -52,6 +54,15 @@ template < typename T> class Point
   T	_x;
   T	_y;
 };
+
+template < typename T >
+std::ostream &operator<<(std::ostream &stream, Point< T > &obj)
+{
+  stream << "Point:" << std::endl;
+  stream << "-> x: " << obj.getX() << std::endl;
+  stream << "-> y: " << obj.getY() << std::endl;
+  return (stream);
+}
 
 typedef Point<int>	PointI;
 typedef Point<float>	PointF;
