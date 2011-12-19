@@ -1,5 +1,7 @@
 CONFIG += ordered
 include(Common/Common.pro)
+include(Network/Network.pro)
+
 
 HEADERS += \
   

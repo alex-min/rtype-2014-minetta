@@ -1,0 +1,31 @@
+Image {
+
+      setVisibleRect( Point ) {
+
+      }    
+      sf:sprite;
+}
+
+AnimatedImage : Image {
+	      
+	      parseFile() {
+	        // parse line
+		// parse col
+	      }	      	
+	      
+	      setLine (int) {
+	      
+	      }
+
+	      setSpeed( int ) {
+
+	      }
+
+	      update (int) {
+
+	      }	     
+
+	      Image *getImage() {
+
+	     }
+}

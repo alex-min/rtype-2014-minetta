@@ -2,7 +2,7 @@
 #define IPADRESS_H
 #include <string>
 #include <iostream>
-#include "LibraryDefines.h"
+#include "String.h"
 
 namespace Network {
 class IpAddress

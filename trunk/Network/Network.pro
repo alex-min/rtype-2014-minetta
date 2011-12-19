@@ -1,8 +1,8 @@
 HEADERS += \
-  IpAddress.h
+  $$PWD/IpAddress.h
 
 SOURCES += \
-  IpAddress.cpp
+  $$PWD/IpAddress.cpp
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
