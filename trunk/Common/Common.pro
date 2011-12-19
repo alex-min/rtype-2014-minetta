@@ -4,7 +4,7 @@ INCLUDEPATH += $$PWD
 
 
 HEADERS += \
-    $$PWD/String.h \
+    $$PWD/MyString.h \
     $$PWD/Point.h \
     $$PWD/Thread.h \
     $$PWD/Singleton.h \
@@ -22,7 +22,7 @@ HEADERS += \
     $$PWD/SystemDefines.h
 
 SOURCES += \
-    $$PWD/String.cpp \
+    $$PWD/MyString.cpp \
     $$PWD/ScopedLock.cpp \
     $$PWD/CircularBuffer.cpp \
     $$PWD/PThreadThread.cpp \

@@ -2,7 +2,7 @@
 #define IPADRESS_H
 #include <string>
 #include <iostream>
-#include "String.h"
+#include "MyString.h"
 #include "SystemDefines.h"
 #include "LibC.h"
 
