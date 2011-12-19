@@ -1,5 +1,5 @@
-#ifndef STRING_H
-#define STRING_H
+#ifndef STRING_COMMON_H__
+#define STRING_COMMON_H__
 
 #include <string>
 #include <vector>

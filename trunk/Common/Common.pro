@@ -1,4 +1,6 @@
-INCLUDEPATH +=
+CONFIG(COMMON_MODULE) {
+} else {
+INCLUDEPATH += $$PWD
 
 
 HEADERS += \
@@ -16,7 +18,8 @@ HEADERS += \
     $$PWD/PThreadMutex.h \
     $$PWD/ConfLoader.hpp \
     $$PWD/Exception.h \
-    $$PWD/BaseRegex.h
+    $$PWD/BaseRegex.h \
+    $$PWD/SystemDefines.h
 
 SOURCES += \
     $$PWD/String.cpp \
@@ -32,7 +35,5 @@ win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
 
 DEFINES += COMMON_MODULE
-
-
-
-
+CONFIG += COMMON_MODULE
+}

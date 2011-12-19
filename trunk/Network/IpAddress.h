@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "String.h"
+#include "SystemDefines.h"
 
 namespace Network {
 class IpAddress

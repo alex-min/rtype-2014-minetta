@@ -1,3 +1,9 @@
+CONFIG(NETWORK_MODULE) {
+} else {
+INCLUDEPATH += $$PWD
+
+include(../Common/Common.pro)
+
 HEADERS += \
   $$PWD/IpAddress.h
 
@@ -6,3 +12,4 @@ SOURCES += \
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
+}
