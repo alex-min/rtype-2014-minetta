@@ -13,16 +13,20 @@ HEADERS += \
     $$PWD/CircularBuffer.h \
     $$PWD/IThread.h \
     $$PWD/IMutex.h \
-    $$PWD/PThreadMutex.h
+    $$PWD/PThreadMutex.h \
+    Common/ConfLoader.hpp
 
 SOURCES += \
     $$PWD/String.cpp \
     $$PWD/ScopedLock.cpp \
     $$PWD/CircularBuffer.cpp \
     $$PWD/PThreadThread.cpp \
-    $$PWD/PThreadMutex.cpp
+    $$PWD/PThreadMutex.cpp \
+    Common/ConfLoader.cpp
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
 
 DEFINES += COMMON_MODULE
+
+

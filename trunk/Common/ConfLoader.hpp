@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-#include "../Common/Network/Exception.h"
+#include "Exception.h"
 
 class ConfLoader
 {
