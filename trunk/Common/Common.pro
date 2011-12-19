@@ -15,7 +15,8 @@ HEADERS += \
     $$PWD/IMutex.h \
     $$PWD/PThreadMutex.h \
     $$PWD/ConfLoader.hpp \
-    $$PWD/Exception.h
+    $$PWD/Exception.h \
+    $$PWD/BaseRegex.h
 
 SOURCES += \
     $$PWD/String.cpp \
@@ -24,7 +25,8 @@ SOURCES += \
     $$PWD/PThreadThread.cpp \
     $$PWD/PThreadMutex.cpp \
     $$PWD/ConfLoader.cpp \
-    $$PWD/Exception.cpp
+    $$PWD/Exception.cpp \
+    $$PWD/BaseRegex.cpp
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
