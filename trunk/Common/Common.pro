@@ -14,7 +14,8 @@ HEADERS += \
     $$PWD/IThread.h \
     $$PWD/IMutex.h \
     $$PWD/PThreadMutex.h \
-    Common/ConfLoader.hpp
+    $$PWD/ConfLoader.hpp \
+    $$PWD/Exception.h
 
 SOURCES += \
     $$PWD/String.cpp \
@@ -22,11 +23,14 @@ SOURCES += \
     $$PWD/CircularBuffer.cpp \
     $$PWD/PThreadThread.cpp \
     $$PWD/PThreadMutex.cpp \
-    Common/ConfLoader.cpp
+    $$PWD/ConfLoader.cpp \
+    $$PWD/Exception.cpp
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
 
 DEFINES += COMMON_MODULE
+
+
 
 
