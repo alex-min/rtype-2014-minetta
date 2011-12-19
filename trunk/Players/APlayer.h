@@ -6,12 +6,12 @@
 class APlayer : public IPlayer
 {
 public:
-    APlayer();
+    APlayer(double speed = 1.280);
     virtual const AnimatedSprite          *getSprite();
     virtual void                setSprite(AnimatedSprite *sprite, unsigned int imgWidth, unsigned int imgHeight);
-    virtual unsigned int        getSpeed();
+    virtual double              getSpeed();
     // Speed en pixel/ms
-    virtual void                setSpeed(int speed);
+    virtual void                setSpeed(double speed);
     virtual Point<int> const    &getPosition();
     virtual void                die();
     virtual bool                isDead();
@@ -23,7 +23,7 @@ public:
     virtual bool                setPosition(Point<int> const &);
     virtual ~APlayer();
 protected:
-    int                         _speed;
+    double             _speed;
     Point<int>                  _position;
     AnimatedSprite              *_sprite;
     bool                        _isDead;

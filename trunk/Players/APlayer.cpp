@@ -1,6 +1,6 @@
 #include "APlayer.h"
 
-APlayer::APlayer() : _speed(0), _position(Point<int>(0,0)), _sprite(0), _isDead(0), _widthSize(0), _heightSize(0)
+APlayer::APlayer(double speed) : _speed(speed), _position(Point<int>(0,0)), _sprite(0), _isDead(0), _widthSize(0), _heightSize(0)
 {
 }
 
@@ -20,12 +20,12 @@ APlayer::~APlayer()
 {
 }
 
-unsigned int        APlayer::getSpeed()
+double        APlayer::getSpeed()
 {
     return (_speed);
 }
 
-void                APlayer::setSpeed(int speed)
+void                APlayer::setSpeed(double speed)
 {
     _speed = speed;
 }

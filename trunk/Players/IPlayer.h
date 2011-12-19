@@ -11,13 +11,14 @@ public:
         LEFT,
         RIGHT,
         UP,
-        DOWN
+        DOWN,
+        UNKNOWN
     };
     virtual const AnimatedSprite *getSprite() = 0;
     virtual void            setSprite(AnimatedSprite *sprite, unsigned int imgWidth, unsigned int imgHeight) = 0;
-    virtual unsigned int    getSpeed() = 0;
+    virtual double    getSpeed() = 0;
     // Speed en pixel/ms
-    virtual void            setSpeed(int speed) = 0;
+    virtual void            setSpeed(double speed) = 0;
     virtual void            shoot() = 0;
     virtual void            move(const Direction &) = 0;
     virtual void            doSomeActions(int time) = 0;
