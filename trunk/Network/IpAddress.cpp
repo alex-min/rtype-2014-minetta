@@ -39,5 +39,6 @@ Int8 const & IpAddress::toArray() const
 IpAddress IpAddress::getLocalAddress()
 {
 }
-}
+
+} // !Namespace : Network
 

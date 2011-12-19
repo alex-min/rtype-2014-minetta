@@ -4,28 +4,23 @@
 #include "Mutex.h"
 #include "ScopedLock.h"
 
-template <class T> class Singleton  {
-protected:
-    Singleton();
+template <class T> class Singleton
+{
 public:
-    static T *getInstance()
+    static  T       *getInstance()
     {
-        //ScopedLock  scopedLock(&_createInstanceMut);
-        _createInstanceMut.lock();
         if (!_instance)
         {
+            _createInstanceMut.lock();
             if (!_instance)
-            {
               _instance = new T();
-            }
+            _createInstanceMut.unlock();
         }
-        _createInstanceMut.unlock();
         return (_instance);
     }
 
-    static void deleteInstance()
+    static  void    deleteInstance()
     {
-      //  ScopedLock  scopedLock(&_deleteInstanceMut);
       if (_instance)
       {
           _createInstanceMut.lock();
@@ -35,11 +30,12 @@ public:
         _createInstanceMut.unlock();
        }
      }
-    static T *_instance;
 
 private:
-    static Mutex   _createInstanceMut;
-    //static Mutex   _deleteInstanceMut;
+    Singleton();
+
+    static T        *_instance;
+    static Mutex    _createInstanceMut;
 };
 
 template <class T>

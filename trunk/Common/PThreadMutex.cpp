@@ -11,24 +11,24 @@ PThreadMutex::~PThreadMutex()
   pthread_mutex_destroy(&_mut);
 }
 
-void PThreadMutex::lock()
+void    PThreadMutex::lock()
 {
   pthread_mutex_lock(&_mut);
 }
 
-void PThreadMutex::unlock()
+void    PThreadMutex::unlock()
 {
   pthread_mutex_unlock(&_mut);
 }
 
-bool PThreadMutex::trylock()
+bool    PThreadMutex::trylock()
 {
   if (!(pthread_mutex_trylock(&_mut)))
     return (true);
   return (false);
 }
 
-IMutex *PThreadMutex::create()
+IMutex  *PThreadMutex::create()
 {
   return (new PThreadMutex);
 }

@@ -1,7 +1,11 @@
 #ifndef PTHREADMUTEX_H_
 #define PTHREADMUTEX_H_
 
+#ifdef OS_WINDOWS
+#include <memory.h>
+#include <string.h>
 #include <pthread.h>
+#endif
 #include "IMutex.h"
 
 class PThreadMutex : public IMutex

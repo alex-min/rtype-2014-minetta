@@ -34,6 +34,9 @@ SOURCES += \
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
 
+win32: LIBS += "$$PWD/../lib/libpthreadGC2_win32.a" \
+
+
 DEFINES += COMMON_MODULE
 CONFIG += COMMON_MODULE
 }
