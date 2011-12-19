@@ -4,15 +4,16 @@
 #include <iostream>
 #include "String.h"
 #include "SystemDefines.h"
+#include "LibC.h"
 
 namespace Network {
 class IpAddress
 {
 public:
-    IpAddress(const std::string &ip = "");
+    IpAddress(const String &ip = "");
     IpAddress(Int8, Int8, Int8, Int8);
     IpAddress();
-    const std::string & toString() const;
+    const String & toString() const;
     Int8 const & toArray() const;
     static IpAddress getLocalAddress();
 
@@ -20,7 +21,7 @@ public:
 
 protected:
     Int8 _addr[4];
-    std::string _str;
+    String _str;
 };
 }
 

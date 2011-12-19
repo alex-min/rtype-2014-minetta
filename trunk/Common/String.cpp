@@ -16,7 +16,7 @@ String::String(const std::string &ref) : std::string(ref)
 {
 }
 
-const std::vector<String> *String::split(char delim)
+const std::vector<String> *String::split(char delim) const
 {
     std::vector<String> *vect = new std::vector<String>();
     vect->reserve(countNbWord(delim));
@@ -38,7 +38,14 @@ String::String(int val)
     (*this) = oss.str();
 }
 
-int String::toInt()
+String String::toString(int nb)
+{
+    std::stringstream iss("");
+    iss << nb;
+    return (iss.str());
+}
+
+int String::toInt() const
 {
     std::istringstream iss((*this));
     int nombre;
@@ -54,11 +61,11 @@ int String::toInt(const std::string &val)
     return (nombre);
 }
 
-int String::countNbWord(char delim)
+int String::countNbWord(char delim) const
 {
     unsigned int i = 0;
     unsigned int nbWord = 0;
-    std::string *tmp = this;
+    const std::string *tmp = this;
 
     while (i < this->size())
     {

@@ -15,11 +15,11 @@ public:
     String(const std::string &ref);
     String(int val);
     virtual ~String();
-    const std::vector<String> *split(char delim);
-    int toInt();
+    const std::vector<String> *split(char delim) const;
+    int toInt() const;
+    int countNbWord(char delim) const;
     static int toInt(const std::string &);
-public:
-    int countNbWord(char delim);
+    static String toString(int nb);
 
 };
 

@@ -23,6 +23,7 @@ void	ElfAutoLoad::dumpFile(std::string const &file)
   _elf.dumpFile(file);
 }
 
+
 std::list<const char *> ElfAutoLoad::getSymbolsFromRegex(const char *regex)
 {
   std::list<const char *> list;

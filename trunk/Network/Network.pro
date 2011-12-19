@@ -3,6 +3,7 @@ CONFIG(NETWORK_MODULE) {
 INCLUDEPATH += $$PWD
 
 include(../Common/Common.pro)
+include(../LibCWrapper/LibC.pro)
 
 HEADERS += \
   $$PWD/IpAddress.h
