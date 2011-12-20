@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include "SystemDefines.h"
 
 class String : public std::string
 {
@@ -20,6 +21,8 @@ public:
     int countNbWord(char delim) const;
     static int toInt(const std::string &);
     static String toString(int nb);
+    static String byteToString(UInt8 nb);
+
 
 };
 

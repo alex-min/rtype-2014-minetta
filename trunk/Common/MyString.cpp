@@ -45,6 +45,13 @@ String String::toString(int nb)
     return (iss.str());
 }
 
+String String::byteToString(UInt8 nb)
+{
+    std::stringstream iss("");
+    iss << (unsigned int) nb;
+    return (iss.str());
+}
+
 int String::toInt() const
 {
     std::istringstream iss((*this));
