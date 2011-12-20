@@ -2,7 +2,7 @@
  * @file Point.h
  * @brief Point
  * @author joris profili
- * @date Fri Dec 16 15:27:32 2011
+ * @date Fri Dec 16 16:38:25 2011
  * 
  * Point
 */
