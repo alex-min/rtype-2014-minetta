@@ -4,15 +4,15 @@ WinDynaLib::WinDynaLib()
 {
 }
 
-void    WinDynaLib::dynaLoad(String libName)
+void    WinDynaLib::dynaLoad(std::string libName)
 {
-    _DLLHandle = LoadLibrary(libName);
+    _DLLHandle = LoadLibrary((WCHAR*)libName.c_str());
 }
 
-void    *WinDynaLib::funcLoad(String funcName)
+void    *WinDynaLib::funcLoad(std::string funcName)
 {
-    if (DLLHandle != NULL)
-        return(p_NomFonction = (f_Encode)GetProcAddress(DLLHandle, funcName));
+    if (_DLLHandle != NULL)
+        return((void *)GetProcAddress(_DLLHandle, funcName.c_str()));
     return (0);
 }
 

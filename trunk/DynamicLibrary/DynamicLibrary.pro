@@ -19,6 +19,10 @@ CONFIG += DYNAMICLIB_MODULE
 HEADERS += \
     IDynaLib.hpp \
 
+SOURCES += \
+    main.cpp
+
+
 
 
 

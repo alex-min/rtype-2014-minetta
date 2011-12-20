@@ -1,14 +1,15 @@
 #ifndef IDYNALIB_H_
 #define IDYNALIB_H_
 
+#include <iostream>
+
 class IDynaLib
 {
 public:
-    IDynaLib();
-protected:
-    void    dynaLoad(String libName) = 0;
-    void    *funLoad(String funcName) = 0;
-    void    dynaFree() = 0;
+    virtual ~IDynaLib() {}
+    virtual void    dynaLoad(std::string libName) = 0;
+    virtual void    *funcLoad(std::string funcName) = 0;
+    virtual void    dynaFree() = 0;
 };
 
 
