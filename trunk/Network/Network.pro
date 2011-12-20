@@ -9,11 +9,16 @@ HEADERS += \
   $$PWD/ISocket.h \
   $$PWD/MySocket.h \
   $$PWD/IpAddress.h \
-  $$PWD/NetworkDisconnect.h
+  $$PWD/NetworkDisconnect.h \
+  $$PWD/INetworkManager.h \
+  $$PWD/MyNetworkManager.h \
+  $$PWD/Network.h
+
 
 
 SOURCES += \
-  $$PWD/IpAddress.cpp
+  $$PWD/IpAddress.cpp \
+  $$PWD/Network.cpp
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
@@ -22,10 +27,14 @@ win32: LIBS += "$$PWD/../lib/libws2_32_win32.a"
 
 unix {
     HEADERS += \
-    $$PWD/UNIXSocket.h
+    $$PWD/UNIXSocket.h \
+    $$PWD/UNIXNetworkManager.h
+
 
     SOURCES += \
-    $$PWD/UNIXSocket.cpp
+    $$PWD/UNIXSocket.cpp \
+    $$PWD/UNIXNetworkManager.cpp
+
 }
 
 win32 {
@@ -39,10 +48,3 @@ SOURCES += \
  CONFIG += NETWORK_MODULE
  DEFINES += NETWORK_MODULE
 }
-
-
-
-
-
-
-
