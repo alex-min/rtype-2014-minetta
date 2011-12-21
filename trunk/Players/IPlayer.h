@@ -1,8 +1,8 @@
 #ifndef IPLAYER_H
 #define IPLAYER_H
 
-#include "AnimatedSprite.h"
-#include "Common/Point.h"
+#include "AnimatedImage.h"
+#include "Point.h"
 
 class IPlayer
 {
@@ -14,9 +14,9 @@ public:
         DOWN,
         UNKNOWN
     };
-    virtual const AnimatedSprite *getSprite() = 0;
-    virtual void            setSprite(AnimatedSprite *sprite, unsigned int imgWidth, unsigned int imgHeight) = 0;
-    virtual double    getSpeed() = 0;
+    virtual const AnimatedImage *getSprite() = 0;
+    virtual void            setSprite(AnimatedImage *sprite, unsigned int imgWidth, unsigned int imgHeight) = 0;
+    virtual double          getSpeed() = 0;
     // Speed en pixel/ms
     virtual void            setSpeed(double speed) = 0;
     virtual void            shoot() = 0;

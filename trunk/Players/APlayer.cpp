@@ -4,12 +4,12 @@ APlayer::APlayer(double speed) : _speed(speed), _position(Point<int>(0,0)), _spr
 {
 }
 
-const AnimatedSprite          *APlayer::getSprite()
+const AnimatedImage          *APlayer::getSprite()
 {
     return (_sprite);
 }
 
-void                APlayer::setSprite(AnimatedSprite *sprite, unsigned int imgWidth, unsigned int imgHeight)
+void                APlayer::setSprite(AnimatedImage *sprite, unsigned int imgWidth, unsigned int imgHeight)
 {
     _sprite = sprite;
     _widthSize = imgWidth;

@@ -13,9 +13,6 @@ QT       += core gui
 TARGET = GraphicClient
 TEMPLATE = app
 
-
-unix:LIBS += -lsfml-graphics -lsfml-window -lsfml-system -L/usr/X11R6/lib -lX11 -lpthread
-
 SOURCES += ./GraphicClient/main.cpp\
     ./GraphicClient/QSFMLCanvas.cpp \
     ./GraphicClient/MyCanvas.cpp \
