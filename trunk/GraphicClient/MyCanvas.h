@@ -10,7 +10,7 @@ class MyCanvas : public QSFMLCanvas
 {
 public :
 
-    MyCanvas(QWidget* parent, const QPoint& position, const QSize& size, unsigned int frameTime = 0);
+    MyCanvas(QWidget* parent, const QPoint& position, const QSize& size, UInt32 frameTime = 0);
 
 private :
 

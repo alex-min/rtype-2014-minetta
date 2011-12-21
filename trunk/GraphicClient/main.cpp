@@ -8,10 +8,10 @@ int main(int ac, char **av)
 
     QFrame* MainFrame = new QFrame;
     MainFrame->setWindowTitle("Qt SFML");
-    MainFrame->resize(800, 500);
+    MainFrame->resize(1000, 1000);
     MainFrame->show();
 
-    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(800, 800), 100);
+    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(1000, 1000), 100);
 
     SFMLView->show();
 

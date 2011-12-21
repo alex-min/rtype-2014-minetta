@@ -3,7 +3,7 @@ CONFIG(TINYMONSTER_MODULE) {
 INCLUDEPATH += $$PWD
 
 include(../players.pro)
-include(../../GraphicClient/winLib/sfmllib.pro)
+include(../../winLib/sfmllib.pro)
 TEMPLATE = lib
 CONFIG += dll
 

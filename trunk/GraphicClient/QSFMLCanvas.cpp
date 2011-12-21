@@ -5,7 +5,7 @@
 #include <X11/Xlib.h>
 #endif
 
-QSFMLCanvas::QSFMLCanvas(QWidget* parent, const QPoint& position, const QSize& size, unsigned int frameTime) :
+QSFMLCanvas::QSFMLCanvas(QWidget* parent, const QPoint& position, const QSize& size, UInt32 frameTime) :
     QWidget       (parent),
     _initialized (false)
 {
@@ -44,7 +44,7 @@ QPoint const &QSFMLCanvas::getPos()
     return (_pos);
 }
 
-unsigned int QSFMLCanvas::getFrameTime() const
+UInt32 QSFMLCanvas::getFrameTime() const
 {
     return (_frameTime);
 }
@@ -64,7 +64,7 @@ void    QSFMLCanvas::setPos(QPoint const &pos)
     _pos = pos;
 }
 
-void    QSFMLCanvas::setFrameTime(unsigned int frameTime)
+void    QSFMLCanvas::setFrameTime(UInt32 frameTime)
 {
     _frameTime = frameTime;
 }

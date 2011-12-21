@@ -4,20 +4,21 @@
 #include <SFML/Graphics.hpp>
 #include <Qt/qwidget.h>
 #include <Qt/qtimer.h>
+#include "SystemDefines.h"
 
 class QSFMLCanvas : public QWidget, public sf::RenderWindow
 {
 public :
 
-    QSFMLCanvas(QWidget* parent, const QPoint& position, const QSize& size, unsigned int frameTime = 0);
+    QSFMLCanvas(QWidget* parent, const QPoint& position, const QSize& size, UInt32 frameTime = 0);
     bool    isInitialized();
     QSize const &getScreenSize();
     QPoint const &getPos();
-    unsigned int getFrameTime() const;
+    UInt32 getFrameTime() const;
     void    setInitialized(bool init);
     void    setScreenSize(QSize const &size);
     void    setPos(QPoint const &pos);
-    void    setFrameTime(unsigned int frameTime);
+    void    setFrameTime(UInt32 frameTime);
     virtual ~QSFMLCanvas();
 
 private :
@@ -34,7 +35,7 @@ protected:
     bool   _initialized;
     QSize  _size;
     QPoint _pos;
-    unsigned int _frameTime;
+    UInt32 _frameTime;
 };
 
 
