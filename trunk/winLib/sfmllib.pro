@@ -75,12 +75,12 @@ SOURCES +=
 }
 
 win32:LIBS += \
-    $$PWD/../../lib/win32/libsfml-audio.a \
-    $$PWD/../../lib/win32/libsfml-graphics.a \
-    $$PWD/../../lib/win32/libsfml-network.a \
-    $$PWD/../../lib/win32/libsfml-system.a \
-    $$PWD/../../lib/win32/libsfml-window.a \
-    $$PWD/../../lib/win32/libsfml-main.a
+    $$PWD/../lib/win32/libsfml-audio.a \
+    $$PWD/../lib/win32/libsfml-graphics.a \
+    $$PWD/../lib/win32/libsfml-network.a \
+    $$PWD/../lib/win32/libsfml-system.a \
+    $$PWD/../lib/win32/libsfml-window.a \
+    $$PWD/../lib/win32/libsfml-main.a
 
 
 
