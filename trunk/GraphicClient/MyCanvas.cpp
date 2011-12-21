@@ -20,8 +20,10 @@ void MyCanvas::onUpdate()
 
     //    if (GameSingleton::getInstance()->getBackground())
 
-    int posX = 0;
-    int posY = 0;
+    int posX = 50;
+    int posY = 50;
+
+    std::cout << "nombre d'elements: " << _a->getMonsters().size() << std::endl;
 
     for (std::list<sf::Sprite*>::const_iterator it = _a->getMonsters().begin(); it != _a->getMonsters().end(); ++it)
     {

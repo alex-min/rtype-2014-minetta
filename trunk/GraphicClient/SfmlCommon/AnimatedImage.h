@@ -1,7 +1,7 @@
 #ifndef ANIMATEDIMAGE_H
 #define ANIMATEDIMAGE_H
 
-#include "GraphicClient/Image.h"
+#include "Image.h"
 #include <list>
 
 class AnimatedImage : public Image
