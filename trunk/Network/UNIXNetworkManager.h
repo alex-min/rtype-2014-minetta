@@ -17,6 +17,7 @@ public:
     virtual void removeNetwork(Network::Network *network);
     virtual void run(long msTimeout);
     virtual void setSlotListener(Network::NetworkManagerSlot *slot);
+    virtual bool isAClientFrom(Network::Network *client, Network::Network *remote);
 
 private:
     void    parseNetworkList();
@@ -27,7 +28,13 @@ private:
     void readEvent(Network::Network *net);
     void writeEvent(Network::Network *net);
     void udpServerReadEvent(Network::Network *net);
+    void tcpServerReadEvent(Network::Network *net);
+    void tcpClientReadEvent(Network::Network *net);
+    void udpClientWriteEvent(Network::Network *net);
     Network::Network *getUdpClient(Network::Network *remoteServer);
+    void addNetworkFromInside(Network::Network *network);
+    void addNetworkFromInside(Network::MySocket *network);
+
 
 protected:
     fd_set  _readfs;

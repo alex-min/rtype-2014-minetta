@@ -95,3 +95,9 @@ std::cerr << "IpAddress::getLocalAddress() : UNIXImplementation is broken" << st
 
 } // !Namespace : Network
 
+std::ostream & operator<<(std::ostream &out, Network::IpAddress const&ip)
+{
+    out << ip.toString().c_str();
+    return (out);
+}
+

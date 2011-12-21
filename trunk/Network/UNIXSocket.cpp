@@ -1,4 +1,6 @@
 #include "UNIXSocket.h"
+#include <errno.h>
+#include <stdio.h>
 #ifdef OS_UNIX
 
 namespace Network {
@@ -10,6 +12,7 @@ sockaddr_in addressToSockAddr(Network::IpAddress const &ip, UInt16 port)
         addr.sin_family = AF_INET;
         addr.sin_addr.s_addr= ip.toInt();
         addr.sin_port=htons(port);
+        LOG << inet_ntoa(addr.sin_addr) << " " << ntohs(addr.sin_port) << std::endl;
         return (addr);
     }
 
@@ -24,6 +27,7 @@ void sockAddrToAddress(Network::IpAddress *ip, sockaddr_in const & sin)
 UNIXSocket::UNIXSocket()
 {
     _sock = SOCKET_ERROR;
+    _fakesocketreference = SOCKET_ERROR;
     _max_client = 200;
     _client_connected = 0;
     _isServerSock = false;
@@ -44,6 +48,8 @@ UNIXSocket::UNIXSocket(int sock, struct sockaddr_in sin, unsigned short port)
     _isServerSock = false;
     _type = ISocket::TCP;
     _udpLenTmp = sizeof(struct sockaddr_in);
+    UNIXSocket::setRemoteIp(sin.sin_addr.s_addr);
+    UNIXSocket::setRemotePort(ntohs(sin.sin_port));
 }
 
 bool            UNIXSocket::connect(Network::IpAddress const & remote, UInt16 port,
@@ -75,7 +81,6 @@ bool            UNIXSocket::TCPConnect(Network::IpAddress const & remote, UInt16
 
 bool            UNIXSocket::UDPConnect(Network::IpAddress const & remote, UInt16 port)
 {
-    LOG << "Creating socket" << std::endl;
     UNIXSocket::disconnect();
     _isServerSock = false;
     _sin = Network::addressToSockAddr(remote, port);
@@ -83,24 +88,30 @@ bool            UNIXSocket::UDPConnect(Network::IpAddress const & remote, UInt16
     _port = port;
     _udpClientToServerIp = remote;
     _udpClientToServerPort = port;
+    UNIXSocket::setRemoteIp(remote);
+    UNIXSocket::setRemotePort(port);
     _type = ISocket::UDP;
     if (_sock != SOCKET_ERROR)
         return (true);
     return (false);
 }
 
-void            UNIXSocket::UDPConnectWithoutSocket(Network::IpAddress const &remote, UInt16 port)
+void            UNIXSocket::UDPConnectWithoutSocket(Network::IpAddress const &remote,
+                                                    UInt16 port,
+                                                    ISocket *refsock)
 {
-    LOG << "Creating Fake socket" << std::endl;
+    _fakesocketreference = dynamic_cast<UNIXSocket *> (refsock)->UNIXGetSocket();
     UNIXSocket::disconnect();
     _isServerSock = false;
     _sin = Network::addressToSockAddr(remote, port);
     _udpLenTmp = sizeof(struct sockaddr_in);
     _port = port;
-    _udpClientToServerIp = remote;
+    _udpClientToServerIp.set(remote.toInt());
     _udpClientToServerPort = port;
     _type = ISocket::UDP;
     _fakesocket = true;
+    UNIXSocket::setRemoteIp(_sin.sin_addr.s_addr);
+    UNIXSocket::setRemotePort(ntohs(_sin.sin_port));
 }
 
 
@@ -120,11 +131,35 @@ UInt16           UNIXSocket::sendTo(Network::IpAddress const &remote, UInt32 por
     if (!UNIXSocket::isConnected() || _type != ISocket::UDP)
         throw NetworkDisconnect();
     sockaddr_in sin = Network::addressToSockAddr(remote, port);
+    LOG << "Send to" << _sock << std::endl;
    Int16 ret = ::sendto(_sock, data, len,
                         MSG_NOSIGNAL, (struct sockaddr *) &sin, sizeof(sin));
 
     if (ret == 0 || ret == -1)
     {
+        UNIXSocket::disconnect();
+        throw NetworkDisconnect();
+    }
+    return (ret);
+}
+
+UInt16           UNIXSocket::sendFake(Network::IpAddress const &remote, UInt32 port,
+                                const void *data, UInt32 len)
+{
+    if (!UNIXSocket::isConnected() || _type != ISocket::UDP)
+        throw NetworkDisconnect();
+    sockaddr_in sin = Network::addressToSockAddr(remote, htons(port));
+    LOG << "Send fake (" << _fakesocketreference << ")" << " [" << inet_ntoa(sin.sin_addr) << "]:" <<
+            port << std::endl;
+   Int16 ret = ::sendto(_fakesocketreference, data, len,
+                        MSG_NOSIGNAL, (struct sockaddr *) &sin, sizeof(sin));
+
+    if (ret == 0 || ret == -1)
+    {
+        LOG << ret << std::endl;
+        char a[500];
+        perror(a);
+        std::cout << "Errno" << (int) a << std::endl;
         UNIXSocket::disconnect();
         throw NetworkDisconnect();
     }
@@ -145,8 +180,10 @@ UInt16           UNIXSocket::send(const void *data, UInt32 len)
         }
         return (ret);
     }
+    else if (_fakesocket == false)
+       return (UNIXSocket::sendTo(getRemoteIp(), getRemotePort(), data, len));
     else
-       return (UNIXSocket::sendTo(_udpClientToServerIp, _udpClientToServerPort, data, len));
+       return (UNIXSocket::sendFake(getRemoteIp(), getRemotePort(), data, len));
 }
 
 
@@ -156,7 +193,8 @@ UInt16           UNIXSocket::readFrom(Network::IpAddress *remote, UInt16 *port, 
         throw NetworkDisconnect();
     Int16 size = ::recvfrom(_sock, data, len, 0, (struct sockaddr *) &_udpSinTmp, &_udpLenTmp);
     remote->set(_udpSinTmp.sin_addr.s_addr);
-    *port = ntohs(_udpSinTmp.sin_port);
+    *port = (_udpSinTmp.sin_port);
+    LOGERR << "port:" << (short) *port << std::endl;
     if (size == 0 || size == -1)
     {
         UNIXSocket::disconnect();
@@ -170,7 +208,12 @@ UInt16           UNIXSocket::read(void *data, UInt32 len)
 {
     if (!UNIXSocket::isConnected())
         throw NetworkDisconnect();
-    UInt16 size = ::recv(_sock, data, len, 0);
+    Int16 size = ::recv(_sock, data, len, 0);
+    if (size == 0 || size == -1)
+    {
+        UNIXSocket::disconnect();
+        throw NetworkDisconnect();
+    }
     return (size);
 }
 
@@ -195,7 +238,9 @@ UNIXSocket *    UNIXSocket::waitForClient()
                    (socklen_t *) &client_sin_len);
     if (csock == SOCKET_ERROR)
         throw NetworkDisconnect();
-    return (new UNIXSocket(csock, client_sin, _port));
+    UNIXSocket *sock = new UNIXSocket(csock, client_sin, _port);
+
+    return (sock);
 }
 
 
@@ -217,7 +262,7 @@ bool            UNIXSocket::createTCPServerSocket(UInt16 port)
     ::setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
     if (_sock == SOCKET_ERROR)
       {
-        std::cout << "[-] Cannot create server socket" << std::endl;
+        LOGERR << "[-] Cannot create server socket" << std::endl;
         return (false);
       }
     _sin.sin_family = AF_INET;
@@ -226,11 +271,12 @@ bool            UNIXSocket::createTCPServerSocket(UInt16 port)
     if (bind(_sock, (struct sockaddr*) &_sin, sizeof(struct sockaddr_in)) == -1
         || listen(_sock, 42) == -1)
       {
-         std::cout << "[-] Cannot create server socket" << std::endl;
+         LOGERR << "[-] Cannot create server socket" << std::endl;
         return (false);
       }
     _ip.assign(::inet_ntoa(_sin.sin_addr));
     _port = port;
+    _type = ISocket::TCP;
    return (true);
 }
 
@@ -242,6 +288,7 @@ bool            UNIXSocket::createUDPServerSocket(UInt16 port)
        _isServerSock = true;
       _sock=socket(AF_INET,SOCK_DGRAM,0);
       ::setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
+      //::setsockopt(_sock, SOL_SOCKET, SO_BROADCAST, &enable, sizeof(int));
       if (_sock == SOCKET_ERROR) {
           std::cout << "[-] Cannot create server socket" << std::endl;
           return (false);
@@ -255,13 +302,14 @@ bool            UNIXSocket::createUDPServerSocket(UInt16 port)
           std::cout << "[-] Cannot create server socket" << std::endl;
           return (false);
       }
+      _type = ISocket::UDP;
       return (true);
 }
 
 
 bool            UNIXSocket::isConnected()
 {
-    if (_sock != SOCKET_ERROR || _fakesocket == true)
+    if (_type != ISocket::NOT_CONNECTED && (_sock != SOCKET_ERROR || _fakesocket == true))
         return (true);
     return (false);
 }
@@ -273,6 +321,26 @@ Int32           UNIXSocket::UNIXGetSocket() const {
 ISocket::SockType        UNIXSocket::getType() const
 {
        return (_type);
+}
+
+Network::IpAddress const &UNIXSocket::getRemoteIp() const
+{
+    return (_networkip);
+}
+
+UInt32          UNIXSocket::getRemotePort() const
+{
+    return (_networkport);
+}
+
+void            UNIXSocket::setRemoteIp(Network::IpAddress const &ip)
+{
+    _networkip.set(ip.toInt());
+}
+
+void            UNIXSocket::setRemotePort(UInt16 port)
+{
+    _networkport = port;
 }
 
 } // !namespace : Network

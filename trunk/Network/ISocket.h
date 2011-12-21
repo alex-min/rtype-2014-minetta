@@ -11,7 +11,8 @@ public:
                                     ISocket::SockType type = ISocket::TCP) = 0;
     virtual bool            TCPConnect(Network::IpAddress const & remote, UInt16 port)  = 0;
     virtual bool            UDPConnect(Network::IpAddress const & remote, UInt16 port) = 0;
-    virtual void            UDPConnectWithoutSocket(Network::IpAddress const &remote, UInt16 port) = 0;
+    virtual void            UDPConnectWithoutSocket(Network::IpAddress const &remote, UInt16 port,
+                                                    ISocket *) = 0;
 
     virtual void            disconnect() = 0;
 
@@ -33,6 +34,10 @@ public:
     virtual bool            createUDPServerSocket(UInt16 port) = 0;
     virtual bool            isConnected() = 0;
     virtual SockType        getType() const = 0;
+    virtual Network::IpAddress const &getRemoteIp() const = 0;
+    virtual UInt32          getRemotePort() const = 0;
+    virtual void            setRemoteIp(Network::IpAddress const &) = 0;
+    virtual void            setRemotePort(UInt16 port) = 0;
 
 };
 
@@ -47,6 +52,8 @@ protected:
     int _client_connected;
     int _max_client;
     unsigned short _port;
+    Network::IpAddress _networkip;
+    UInt16             _networkport;
 };
 
 } // !namespace : Network

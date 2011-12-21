@@ -7,12 +7,37 @@ UNIXNetworkManager::UNIXNetworkManager() :
 {
 }
 
+bool UNIXNetworkManager::isAClientFrom(Network::Network *client,
+                                       Network::Network *remote)
+{
+    if (remote && remote->getSocket() && remote->getSocket()->isConnected()
+            && client->getRemoteNetwork() == remote) {
+        return (true);
+    }
+    return (false);
+}
+
 void UNIXNetworkManager::addNetwork(Network::MySocket *sock)
 {
     if (!sock || !(sock->isConnected()))
         return ;
     Network::Network *net = new Network::Network(sock);
     UNIXNetworkManager::addNetwork(net);
+}
+
+void UNIXNetworkManager::addNetworkFromInside(Network::MySocket *sock)
+{
+    if (!sock || !(sock->isConnected()))
+        return ;
+    Network::Network *net = new Network::Network(sock);
+    UNIXNetworkManager::addNetworkFromInside(net);
+}
+
+void UNIXNetworkManager::addNetworkFromInside(Network::Network *network)
+{
+    _network.push_back(network);
+    if (network->getSocket()->UNIXGetSocket() > _maxfd)
+    _maxfd = network->getSocket()->UNIXGetSocket();
 }
 
 void UNIXNetworkManager::addNetwork(Network::Network *network)
@@ -38,7 +63,8 @@ void UNIXNetworkManager::generateReadFs()
     for (std::list<Network::Network *>::iterator it = _network.begin();
          it != _network.end(); ++it)
     {
-        FD_SET((*it)->getSocket()->UNIXGetSocket(), &_readfs);
+        if ((*it)->getSocket()->UNIXGetSocket() != SOCKET_ERROR)
+         FD_SET((*it)->getSocket()->UNIXGetSocket(), &_readfs);
     }
 }
 
@@ -52,7 +78,15 @@ void UNIXNetworkManager::generateWriteFs()
         if (!((*it)->getWriteBuffer()->isEmpty()))
         {
             _hasWriteFs = true;
-            FD_SET((*it)->getSocket()->UNIXGetSocket(), &_writefs);
+            if ((*it)->getSocket()->getType() == Network::ISocket::UDP &&
+                    (*it)->getRemoteNetwork() &&
+                    (*it)->getRemoteNetwork()->getSocket()
+               )
+            {
+                FD_SET((*it)->getRemoteNetwork()->getSocket()->UNIXGetSocket(), &_writefs);
+            }
+            else if ((*it)->getSocket()->UNIXGetSocket() != SOCKET_ERROR)
+                FD_SET((*it)->getSocket()->UNIXGetSocket(), &_writefs);
         }
     }
 }
@@ -65,40 +99,104 @@ Network::Network *UNIXNetworkManager::getUdpClient(Network::Network *remoteServe
     std::map<UInt64, Network::Network *>::iterator it = _udpMapping.find(checkIp);
     if (it != _udpMapping.end()) {
             Network::Network *net = it->second;
+            // TODO : Delete this line
+            net->getWriteBuffer()->append("hello world", 11);
             return (net);
     } else {
         Network::MySocket *sock = new Network::MySocket();
-        sock->UDPConnectWithoutSocket(_udpReceivedIp, _udpReceivedPort);
+        sock->UDPConnectWithoutSocket(_udpReceivedIp, _udpReceivedPort,
+                                      remoteServer->getSocket());
         Network::Network  *client = new Network::Network(sock);
-        UNIXNetworkManager::addNetwork(client);
+        client->setRemoteNetwork(remoteServer);
+        UNIXNetworkManager::addNetworkFromInside(client);
         _udpMapping[checkIp] = client;
         if (_slot) _slot->onClientConnected(remoteServer, client);
-        LOG << "New client connected from udp://" << _udpReceivedIp.toString() <<
-            ":" << _udpReceivedPort << std::endl;
+        LOG << "New client connected from udp://" << client->getSocket()->getRemoteIp() <<
+            ":" << client->getSocket()->getRemotePort() << std::endl;
+        // TODO : Delete this line
+        client->getWriteBuffer()->append("hello world", 11);
         return (0);
     }
 }
 
+void UNIXNetworkManager::tcpServerReadEvent(Network::Network *net)
+{
+    if (!net)
+        return ;
+    if (!(net->getSocket()->isConnected()))
+    {
+        UNIXNetworkManager::removeNetwork(net);
+        return ;
+    }
+    try {
+        Network::MySocket *sock = net->getSocket()->waitForClient();
+        Network::Network  *client = new Network::Network(sock);
+        client->setRemoteNetwork(net);
+        UNIXNetworkManager::addNetwork(client);
+        LOG << "New client connected from tcp://" << client->getSocket()->getRemoteIp() <<
+            ":" << client->getSocket()->getRemotePort() << std::endl;
+    } catch (NetworkDisconnect &) {
+        LOGERR << "Server disconnected from tcp://" << net->getSocket()->getRemoteIp() <<
+            ":" << net->getSocket()->getRemotePort() << std::endl;
+        if (_slot) _slot->onDisconnect(net);
+        UNIXNetworkManager::removeNetwork(net);
+    }
+}
+
+void UNIXNetworkManager::tcpClientReadEvent(Network::Network *net)
+{
+    try {
+    UInt16 readBytes = net->getSocket()->read(_mainBuffer, EACH_READ_SIZE);
+    net->getReadBuffer()->append(_mainBuffer, readBytes);
+    LOG << " ReadEvent (" << readBytes << " bytes read)" << std::endl;
+     if (_slot) _slot->onRead(net->getRemoteNetwork(), net);
+    } catch (NetworkDisconnect &) {
+        LOGERR << "Client disconnected from tcp://" << net->getSocket()->getRemoteIp() <<
+            ":" << net->getSocket()->getRemotePort() << std::endl;
+        if (_slot) _slot->onDisconnect(net);
+        UNIXNetworkManager::removeNetwork(net);
+    }
+}
+
+void UNIXNetworkManager::udpClientWriteEvent(Network::Network *net)
+{
+    if (!net || !(net->getSocket()) || !(net->getSocket()->isConnected()))
+        return ;
+    LOG << "Writting to client" << std::endl;
+    try {
+        UInt32 sizeToWrite = net->getWriteBuffer()->extractKeep(_mainBuffer, EACH_READ_SIZE);
+        LOG << "Sending" << (int) sizeToWrite << " bytes" << std::endl;
+        UInt16 byteWritten = net->getSocket()->send(_mainBuffer, sizeToWrite);
+        net->getWriteBuffer()->drop(byteWritten);
+
+    } catch (NetworkDisconnect &) {
+        LOGERR << "Client disconnected from udp://" << net->getSocket()->getRemoteIp() <<
+            ":" << net->getSocket()->getRemotePort() << std::endl;
+        if (_slot) _slot->onDisconnect(net);
+        //UNIXNetworkManager::removeNetwork(net);
+    }
+}
 
 void UNIXNetworkManager::udpServerReadEvent(Network::Network *net)
 {
-    (void) net;
+
     try {
         UInt16 byteRead = net->getSocket()->readFrom(&_udpReceivedIp, &_udpReceivedPort,
                                    _mainBuffer,
                                    EACH_READ_SIZE);
 
         UNIXNetworkManager::getUdpClient(net);
+        LOG << " ReadEvent (" << byteRead << " bytes read)" << std::endl;
         if (_slot) _slot->onRead(net, net);
         net->getReadBuffer()->append(_mainBuffer, byteRead);
     } catch (NetworkDisconnect &) {
         if (_slot) _slot->onDisconnect(net);
+        UNIXNetworkManager::removeNetwork(net);
     }
 }
 
 void UNIXNetworkManager::readEvent(Network::Network *net)
 {
-    LOG << "Read Event" << std::endl;
     if (!net)
         return ;
   if (!(net->getSocket()->isConnected()))
@@ -110,32 +208,67 @@ void UNIXNetworkManager::readEvent(Network::Network *net)
     if (net->getSocket()->isServerSock())
     {
         if (net->getSocket()->getType() == Network::ISocket::TCP) {
-            LOGERR << "tcp server not implemeted yet" << std::endl;
+            UNIXNetworkManager::tcpServerReadEvent(net);
         } else {
             UNIXNetworkManager::udpServerReadEvent(net);
         }
     } else {
-        LOGERR  << "Client read sock not implemented" << std::endl;
+         if (net->getSocket()->getType() == Network::ISocket::TCP) {
+            UNIXNetworkManager::tcpClientReadEvent(net);
+         } else {
+            // Cannot exist
+         }
     }
 }
 
 void UNIXNetworkManager::writeEvent(Network::Network *net)
 {
     (void) net;
-    LOGERR << "not implemented" << std::endl;
+    if (!net)
+         return ;
+    if (net->getSocket()->getType() == Network::ISocket::TCP) {
+        UInt32 sizeToWrite = net->getWriteBuffer()->extractKeep(_mainBuffer, EACH_READ_SIZE);
+        UInt16 byteWritten = net->getSocket()->send(_mainBuffer, sizeToWrite);
+        net->getWriteBuffer()->drop(byteWritten);
+    } else {
+        if (net->getSocket()->isServerSock()) {
+            for (std::list<Network::Network *>::iterator it = _network.begin();
+                 it != _network.end(); ++it) {
+                    if (UNIXNetworkManager::isAClientFrom(*it, net)) {
+                        if ((*it)->getWriteBuffer()->getReadSize() > 0) {
+                            UNIXNetworkManager::udpClientWriteEvent(*it);
+                        }
+                    }
+            }
+        } else {
+            // cannot happen
+        }
+    }
 }
 
 void  UNIXNetworkManager::parseNetworkList()
 {
-    for (std::list<Network::Network *>::iterator it = _network.begin(); it != _network.end()
-         ; ++it)
+    while (1)
     {
-        if ((*it)->getSocket() && (*it)->getSocket()->UNIXGetSocket() != SOCKET_ERROR &&
-                FD_ISSET((*it)->getSocket()->UNIXGetSocket(), &_readfs))
-            UNIXNetworkManager::readEvent(*it);
-        else if ((*it)->getSocket() && (*it)->getSocket()->UNIXGetSocket() != SOCKET_ERROR
-                 && FD_ISSET((*it)->getSocket()->UNIXGetSocket(), &_writefs))
-            UNIXNetworkManager::writeEvent(*it);
+        for (std::list<Network::Network *>::iterator it = _network.begin(); it != _network.end()
+             ; ++it)
+        {
+            if ((*it)->getSocket() && (*it)->getSocket()->UNIXGetSocket() != SOCKET_ERROR &&
+                    FD_ISSET((*it)->getSocket()->UNIXGetSocket(), &_readfs))
+            {
+                UNIXNetworkManager::readEvent(*it);
+                FD_CLR((*it)->getSocket()->UNIXGetSocket(), &_readfs);
+                break;
+            }
+            else if ((*it)->getSocket() && (*it)->getSocket()->UNIXGetSocket() != SOCKET_ERROR
+                     && FD_ISSET((*it)->getSocket()->UNIXGetSocket(), &_writefs))
+            {
+                UNIXNetworkManager::writeEvent(*it);
+                FD_CLR((*it)->getSocket()->UNIXGetSocket(), &_readfs);
+                break;
+            }
+        }
+        return ;
     }
 }
 

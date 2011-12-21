@@ -12,12 +12,17 @@ int	main(int ac, char **av)
     (void) ac;
     (void) av;
     try {
+
     Network::MyNetworkManager m;
     Network::MySocket sock;
+    Network::MySocket tcpsock;
 
-    sock.createUDPServerSocket(4244);
+
+    sock.createUDPServerSocket(1216);
+    tcpsock.createTCPServerSocket(5051);
 
     m.addNetwork(&sock);
+    m.addNetwork(&tcpsock);
     while (1) {
         m.run(100);
     }

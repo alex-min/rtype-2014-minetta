@@ -4,7 +4,8 @@ namespace Network {
 Network::Network(unsigned int readCirbufSize, unsigned int writeCirbufSize) :
          _socket(new MySocket),
         _readBuf(readCirbufSize),
-        _writeBuf(writeCirbufSize)
+        _writeBuf(writeCirbufSize),
+        _net(NULL)
 {
 }
 
@@ -45,5 +46,16 @@ CircularBuffer *Network::getWriteBuffer()
 {
     return (&_writeBuf);
 }
+
+Network    *   Network::getRemoteNetwork() const
+{
+    return (_net);
+}
+
+void                Network::setRemoteNetwork(Network *net)
+{
+    _net = net;
+}
+
 
 } // !namespace : Network

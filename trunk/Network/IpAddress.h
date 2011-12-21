@@ -41,11 +41,12 @@ public:
     void resolve(String const & hostname);
 
 
-
 protected:
     Int8 _addr[4];
     String _str;
 };
 }
+
+std::ostream  &operator << (std::ostream &out, Network::IpAddress const &ip);
 
 #endif // IPADRESS_H
