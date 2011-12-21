@@ -162,10 +162,9 @@ void UNIXNetworkManager::udpClientWriteEvent(Network::Network *net)
 {
     if (!net || !(net->getSocket()) || !(net->getSocket()->isConnected()))
         return ;
-    LOG << "Writting to client" << std::endl;
     try {
         UInt32 sizeToWrite = net->getWriteBuffer()->extractKeep(_mainBuffer, EACH_READ_SIZE);
-        LOG << "Sending" << (int) sizeToWrite << " bytes" << std::endl;
+        LOG << "Sending (" << (int) sizeToWrite << " bytes)" << std::endl;
         UInt16 byteWritten = net->getSocket()->send(_mainBuffer, sizeToWrite);
         net->getWriteBuffer()->drop(byteWritten);
 
