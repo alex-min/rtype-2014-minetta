@@ -16,4 +16,8 @@ unix: DEFINES += OS_UNIX
 }
 
 HEADERS += \
-    $$PWD/LibC.h
+    $$PWD/LibC.h \
+    LibCWrapper/Memcpy.h
+
+SOURCES += \
+    LibCWrapper/Memcpy.cpp

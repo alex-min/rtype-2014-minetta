@@ -12,7 +12,9 @@ HEADERS += \
   $$PWD/NetworkDisconnect.h \
   $$PWD/INetworkManager.h \
   $$PWD/MyNetworkManager.h \
-  $$PWD/Network.h
+  $$PWD/Network.h \
+  $$PWD/NetworkManagerException.h \
+  $$PWD/NetworkManagerSlot.h
 
 
 
@@ -29,7 +31,6 @@ unix {
     HEADERS += \
     $$PWD/UNIXSocket.h \
     $$PWD/UNIXNetworkManager.h
-
 
     SOURCES += \
     $$PWD/UNIXSocket.cpp \
@@ -48,3 +49,6 @@ SOURCES += \
  CONFIG += NETWORK_MODULE
  DEFINES += NETWORK_MODULE
 }
+
+HEADERS += \
+

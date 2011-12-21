@@ -1,11 +1,13 @@
 #ifndef SYSTEMDEFINES_H
 #define SYSTEMDEFINES_H
 
+typedef unsigned long long UInt64;
+typedef long long Int64;
 typedef long Int32;
 typedef short Int16;
 typedef char Int8;
 typedef unsigned long UInt32;
-typedef short UInt16;
+typedef unsigned short UInt16;
 typedef unsigned char UInt8;
 typedef unsigned char Byte;
 

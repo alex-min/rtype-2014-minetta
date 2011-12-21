@@ -8,7 +8,7 @@ sockaddr_in addressToSockAddr(Network::IpAddress const &ip, UInt16 port)
         sockaddr_in addr;
         libc::ZeroMemory(&addr, sizeof(addr));
         addr.sin_family = AF_INET;
-        addr.sin_addr.s_addr=inet_addr(ip.toString().c_str());
+        addr.sin_addr.s_addr= ip.toInt();
         addr.sin_port=htons(port);
         return (addr);
     }
@@ -28,17 +28,22 @@ UNIXSocket::UNIXSocket()
     _client_connected = 0;
     _isServerSock = false;
     _port = 0;
+    _fakesocket = false;
     _type = ISocket::NOT_CONNECTED;
+    _udpLenTmp = sizeof(struct sockaddr_in);
+
 }
 
 UNIXSocket::UNIXSocket(int sock, struct sockaddr_in sin, unsigned short port)
 {
+    _fakesocket = false;
     _sock = sock;
     _sin = sin;
     _ip.assign(::inet_ntoa(_sin.sin_addr));
     _port = port;
     _isServerSock = false;
     _type = ISocket::TCP;
+    _udpLenTmp = sizeof(struct sockaddr_in);
 }
 
 bool            UNIXSocket::connect(Network::IpAddress const & remote, UInt16 port,
@@ -70,11 +75,11 @@ bool            UNIXSocket::TCPConnect(Network::IpAddress const & remote, UInt16
 
 bool            UNIXSocket::UDPConnect(Network::IpAddress const & remote, UInt16 port)
 {
+    LOG << "Creating socket" << std::endl;
     UNIXSocket::disconnect();
     _isServerSock = false;
     _sin = Network::addressToSockAddr(remote, port);
     _sock = socket(AF_INET, SOCK_DGRAM, 0);
-    _udpLenTmp = sizeof(struct sockaddr_in);
     _port = port;
     _udpClientToServerIp = remote;
     _udpClientToServerPort = port;
@@ -84,6 +89,20 @@ bool            UNIXSocket::UDPConnect(Network::IpAddress const & remote, UInt16
     return (false);
 }
 
+void            UNIXSocket::UDPConnectWithoutSocket(Network::IpAddress const &remote, UInt16 port)
+{
+    LOG << "Creating Fake socket" << std::endl;
+    UNIXSocket::disconnect();
+    _isServerSock = false;
+    _sin = Network::addressToSockAddr(remote, port);
+    _udpLenTmp = sizeof(struct sockaddr_in);
+    _port = port;
+    _udpClientToServerIp = remote;
+    _udpClientToServerPort = port;
+    _type = ISocket::UDP;
+    _fakesocket = true;
+}
+
 
 void            UNIXSocket::disconnect()
 {
@@ -91,6 +110,7 @@ void            UNIXSocket::disconnect()
         ::close(_sock);
     _sock = SOCKET_ERROR;
     _type = ISocket::NOT_CONNECTED;
+    _fakesocket = false;
 }
 
 
@@ -99,7 +119,6 @@ UInt16           UNIXSocket::sendTo(Network::IpAddress const &remote, UInt32 por
 {
     if (!UNIXSocket::isConnected() || _type != ISocket::UDP)
         throw NetworkDisconnect();
-
     sockaddr_in sin = Network::addressToSockAddr(remote, port);
    Int16 ret = ::sendto(_sock, data, len,
                         MSG_NOSIGNAL, (struct sockaddr *) &sin, sizeof(sin));
@@ -118,7 +137,7 @@ UInt16           UNIXSocket::send(const void *data, UInt32 len)
         throw NetworkDisconnect();
     if (_type == ISocket::TCP)
     {
-        UInt16 ret = ::send(_sock, data, len, 0);
+        Int16 ret = ::send(_sock, data, len, 0);
         if (ret == 0 || ret == -1)
         {
             UNIXSocket::disconnect();
@@ -131,13 +150,13 @@ UInt16           UNIXSocket::send(const void *data, UInt32 len)
 }
 
 
-UInt16           UNIXSocket::readFrom(Network::IpAddress *remote, UInt32 *port, void *data, UInt32 len)
+UInt16           UNIXSocket::readFrom(Network::IpAddress *remote, UInt16 *port, void *data, UInt32 len)
 {
     if (!UNIXSocket::isConnected() || !port || !data)
         throw NetworkDisconnect();
-    UInt16 size = ::recvfrom(_sock, data, len, 0, (struct sockaddr *) &_udpSinTmp, &_udpLenTmp);
+    Int16 size = ::recvfrom(_sock, data, len, 0, (struct sockaddr *) &_udpSinTmp, &_udpLenTmp);
     remote->set(_udpSinTmp.sin_addr.s_addr);
-    *port = _udpSinTmp.sin_port;
+    *port = ntohs(_udpSinTmp.sin_port);
     if (size == 0 || size == -1)
     {
         UNIXSocket::disconnect();
@@ -147,11 +166,11 @@ UInt16           UNIXSocket::readFrom(Network::IpAddress *remote, UInt32 *port, 
 }
 
 
-Int16           UNIXSocket::read(void *data, UInt32 len)
+UInt16           UNIXSocket::read(void *data, UInt32 len)
 {
     if (!UNIXSocket::isConnected())
         throw NetworkDisconnect();
-    Int16 size = ::recv(_sock, data, len, 0);
+    UInt16 size = ::recv(_sock, data, len, 0);
     return (size);
 }
 
@@ -218,8 +237,11 @@ bool            UNIXSocket::createTCPServerSocket(UInt16 port)
 
 bool            UNIXSocket::createUDPServerSocket(UInt16 port)
 {
+    int enable = 1;
     struct sockaddr_in servaddr;
+       _isServerSock = true;
       _sock=socket(AF_INET,SOCK_DGRAM,0);
+      ::setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
       if (_sock == SOCKET_ERROR) {
           std::cout << "[-] Cannot create server socket" << std::endl;
           return (false);
@@ -239,13 +261,18 @@ bool            UNIXSocket::createUDPServerSocket(UInt16 port)
 
 bool            UNIXSocket::isConnected()
 {
-    if (_sock != SOCKET_ERROR)
+    if (_sock != SOCKET_ERROR || _fakesocket == true)
         return (true);
     return (false);
 }
 
 Int32           UNIXSocket::UNIXGetSocket() const {
-    return (_sock);
+       return (_sock);
+}
+
+ISocket::SockType        UNIXSocket::getType() const
+{
+       return (_type);
 }
 
 } // !namespace : Network

@@ -23,7 +23,8 @@ public:
     static String toString(int nb);
     static String byteToString(UInt8 nb);
 
-
+private:
+    std::string _tmptmp;
 };
 
 #endif // STRING_H

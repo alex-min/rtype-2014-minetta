@@ -34,6 +34,8 @@ public:
                                     ISocket::SockType type = ISocket::TCP);
     virtual bool            TCPConnect(Network::IpAddress const & remote, UInt16 port);
     virtual bool            UDPConnect(Network::IpAddress const & remote, UInt16 port);
+    virtual void            UDPConnectWithoutSocket(Network::IpAddress const &remote, UInt16 port);
+
 
     virtual void            disconnect();
 
@@ -42,7 +44,7 @@ public:
     virtual UInt16           send(const void *data, UInt32 len);
 
     // return : size of byte written in buf;
-    virtual UInt16           readFrom(Network::IpAddress *remote, UInt32 *port, void *data, UInt32 len);
+    virtual UInt16           readFrom(Network::IpAddress *remote, UInt16 *port, void *data, UInt32 len);
     virtual UInt16           read(void *data, UInt32 len);
     // return : size of byte written in buf
     virtual bool            isServerSock() const;
@@ -53,6 +55,7 @@ public:
     virtual bool            createTCPServerSocket(UInt16 port);
     virtual bool            createUDPServerSocket(UInt16 port);
     virtual bool            isConnected();
+    virtual SockType        getType() const;
 
 
  public:
@@ -74,6 +77,7 @@ protected:
     bool                    _isServerSock;
     std::string             _ip;
     char                    _ipbuf[30];
+    bool                    _fakesocket;
 };
 
 } // !namespace : Network

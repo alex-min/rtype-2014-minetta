@@ -46,9 +46,9 @@ void IpAddress::set(Int8 a, Int8 b, Int8 c, Int8 d)
     _addr[3] = d;
 }
 
-const String & IpAddress::toString() const
+ String const & IpAddress::toString() const
 {
-    const_cast<String &>(_str) =
+    const_cast<String &> (_str) =
             String::byteToString(_addr[0]) + "." +
             String::byteToString(_addr[1]) + "." +
             String::byteToString(_addr[2]) + "." +

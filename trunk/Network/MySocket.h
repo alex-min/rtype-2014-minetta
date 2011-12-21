@@ -1,5 +1,6 @@
 #ifndef MYSOCKET_H
 #define MYSOCKET_H
+#include "ISocket.h"
 #ifdef OS_WINDOWS
 #include "WindowsSocket.h"
 namespace Network {

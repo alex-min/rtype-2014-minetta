@@ -34,7 +34,7 @@ public:
     void set(const String &ip);
     void set(Int8 a, Int8 b, Int8 c, Int8 d);
     void set(Int32 ip);
-    const String & toString() const;
+    String const & toString() const;
     Int8 const & toArray() const;
     Int32  toInt() const;
     static IpAddress getLocalAddress();
