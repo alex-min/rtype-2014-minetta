@@ -9,7 +9,7 @@ class QSFMLCanvas : public QWidget, public sf::RenderWindow
 {
 public :
 
-    QSFMLCanvas(QWidget* Parent, const QPoint& Position, const QSize& Size, unsigned int frameTime = 0);
+    QSFMLCanvas(QWidget* parent, const QPoint& position, const QSize& size, unsigned int frameTime = 0);
     bool    isInitialized();
     QSize const &getScreenSize();
     QPoint const &getPos();
@@ -28,7 +28,7 @@ private :
     virtual void showEvent(QShowEvent*);
     virtual void paintEvent(QPaintEvent*);
 
-private:
+protected:
 
     QTimer  _timer;
     bool   _initialized;

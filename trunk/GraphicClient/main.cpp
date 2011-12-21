@@ -1,5 +1,6 @@
 #include <QtGui/QApplication>
 #include "MyCanvas.h"
+#include "AnimatedImage.h"
 
 int main(int ac, char **av)
 {
@@ -10,8 +11,7 @@ int main(int ac, char **av)
     MainFrame->resize(800, 500);
     MainFrame->show();
 
-    GameSingleton::getInstance()->loadBackground("background.png");
-    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(800, 800));
+    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(800, 800), 100);
 
     SFMLView->show();
 

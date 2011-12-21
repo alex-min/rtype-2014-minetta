@@ -5,8 +5,8 @@
 #include <X11/Xlib.h>
 #endif
 
-QSFMLCanvas::QSFMLCanvas(QWidget* Parent, const QPoint& Position, const QSize& Size, unsigned int frameTime) :
-    QWidget       (Parent),
+QSFMLCanvas::QSFMLCanvas(QWidget* parent, const QPoint& position, const QSize& size, unsigned int frameTime) :
+    QWidget       (parent),
     _initialized (false)
 {
     setAttribute(Qt::WA_PaintOnScreen);
@@ -15,9 +15,12 @@ QSFMLCanvas::QSFMLCanvas(QWidget* Parent, const QPoint& Position, const QSize& S
 
     setFocusPolicy(Qt::StrongFocus);
 
-    move(Position);
-    resize(Size);
+    move(position);
+    resize(size);
 
+    _pos = position;
+    _size = size;
+    _frameTime = frameTime;
     _timer.setInterval(frameTime);
 }
 

@@ -12,11 +12,11 @@ public:
 
     Image();
     Image(std::string const &filename);
-    bool    hasImageLoaded() const;
-    bool    loadImage(std::string const &filename);
-    void    setSprite(sf::Image const &image);
-    sf::Sprite &getSprite();
-    ~Image();
+    virtual bool    hasImageLoaded() const;
+    virtual bool    loadImage(std::string const &filename);
+    virtual void    setSprite(sf::Image const &image);
+    virtual sf::Sprite &getSprite();
+    virtual ~Image();
 
 protected:
 

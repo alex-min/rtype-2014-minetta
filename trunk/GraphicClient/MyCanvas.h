@@ -4,12 +4,13 @@
 #include "QSFMLCanvas.h"
 #include <Qt/qframe.h>
 #include "Game.h"
+#include "AnimatedImage.h"
 
 class MyCanvas : public QSFMLCanvas
 {
 public :
 
-    MyCanvas(QWidget* Parent, const QPoint& Position, const QSize& Size, unsigned int frameTime = 0);
+    MyCanvas(QWidget* parent, const QPoint& position, const QSize& size, unsigned int frameTime = 0);
 
 private :
 
@@ -17,6 +18,7 @@ private :
     virtual void onUpdate();
 
 private:
+AnimatedImage   *_a;
 
 };
 
