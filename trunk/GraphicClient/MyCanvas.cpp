@@ -8,7 +8,7 @@ MyCanvas::MyCanvas(QWidget* parent, const QPoint& position, const QSize& size, U
 
 void MyCanvas::onInit()
 {
-    _a = new AnimatedImage("r-typesheet21.png");
+    _a = new AnimatedImage("r-typesheet42.png");
 
     _a->parseFile();
 }
@@ -19,6 +19,8 @@ void MyCanvas::onUpdate()
 
     //    if (GameSingleton::getInstance()->getBackground())
 
+    GameSingleton::getInstance()->eventLoop(*this, _clock);
+
     Int32 posX = 0;
     Int32 posY = 0;
 
@@ -27,12 +29,12 @@ void MyCanvas::onUpdate()
         (*it)->SetPosition(posX, posY);
         Draw(**it);
 
-        if ((posX + 40) >= _size.width())
+        if ((posX + 50) >= _size.width())
         {
             posX = 0;
-            posY += 40;
+            posY += 50;
         }
         else
-            posX += 40;
+            posX += 50;
     }
 }

@@ -8,11 +8,12 @@ int main(int ac, char **av)
 
     QFrame* MainFrame = new QFrame;
     MainFrame->setWindowTitle("Qt SFML");
-    MainFrame->resize(1000, 1000);
+    MainFrame->resize(1500, 800);
     MainFrame->show();
 
-    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(1000, 1000), 100);
+    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(1500, 800), 0);
 
+    SFMLView->UseVerticalSync(false);
     SFMLView->show();
 
     return app.exec();

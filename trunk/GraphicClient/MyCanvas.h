@@ -5,6 +5,7 @@
 #include <Qt/qframe.h>
 #include "Game.h"
 #include "AnimatedImage.h"
+#include "Singleton.h"
 
 class MyCanvas : public QSFMLCanvas
 {
@@ -18,8 +19,8 @@ private :
     virtual void onUpdate();
 
 private:
-AnimatedImage   *_a;
-
+    AnimatedImage   *_a;
+    sf::Clock       _clock;
 };
 
 #endif // MYCANVAS_H

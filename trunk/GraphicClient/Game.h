@@ -1,9 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Common/Singleton.h"
+#include "Singleton.h"
 #include "Image.h"
+#include "SFML/Graphics.hpp"
 #include <list>
+
+class MyCanvas;
 
 class Game
 {
@@ -12,6 +15,7 @@ public:
     bool        loadBackground(std::string const &filename);
     Image const *getBackground() const;
     Image       *getBackground();
+    void        eventLoop(MyCanvas &app, sf::Clock &clock);
     ~Game();
 private:
 
