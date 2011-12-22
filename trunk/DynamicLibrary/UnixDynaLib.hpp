@@ -1,6 +1,7 @@
 #ifndef UNIXDYNALIB_HPP
 #define UNIXDYNALIB_HPP
 
+#include <dlfcn.h>
 #include "IDynaLib.hpp"
 
 class UnixDynaLib : public IDynaLib
@@ -10,7 +11,8 @@ public:
     virtual void    dynaLoad(std::string libName);
     virtual void    *funcLoad(std::string funcName);
     virtual void    dynaFree();
-    Elf32Load	_elf;
+private:
+    void *_handle;
 };
 
 #endif // UNIXDYNALIB_HPP

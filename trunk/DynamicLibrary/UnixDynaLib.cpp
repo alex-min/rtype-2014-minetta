@@ -6,20 +6,29 @@ UnixDynaLib::UnixDynaLib()
 
 void    UnixDynaLib::dynaLoad(std::string libName)
 {
-    _elf.dumpFile(libName);
+
+    _handle = dlopen(libName.c_str(), RTLD_LAZY);
+
+    if (_handle == NULL)
+       throw new Exception(dlerror());
+    dlerror();
 }
 
 void    *UnixDynaLib::funcLoad(std::string funcName)
 {
-    const std::list<const ElfSymbol *> & symList = _elf.extractSymbolList();
-    for (std::list<const ElfSymbol *>::const_iterator it = symList.begin();
-         it != symList.end(); ++it)
-        if (funcName == _elf.getSymbolName(*it))
-            return(_elf.getSymbolName(*it));
-    return (0);
+    char *error;
+    void *tmp = dlsym(_handle, funcName.c_str());
+
+    if ((error = dlerror()) != NULL)  {
+        throw new Exception(error);
+    }
+    return (tmp);
 }
 
 void    UnixDynaLib::dynaFree()
 {
-    ;
+    if (_handle)
+    {
+        dlclose(_handle);
+    }
 }
