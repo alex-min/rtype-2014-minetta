@@ -1,10 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Singleton.h"
-#include "Image.h"
-#include "SFML/Graphics.hpp"
 #include <list>
+#include "Singleton.h"
+#include "AnimatedImage.h"
+#include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
+#include "APlayer.h"
 
 class MyCanvas;
 
@@ -19,7 +21,9 @@ public:
     ~Game();
 private:
 
+    EventReceiver   _eventReceiver;
     Image *_background;
+    AnimatedImage   *_a;
 
     //    std::list<Player>    _players;
     //    std::list<Monster>  _monsters;

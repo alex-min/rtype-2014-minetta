@@ -21,6 +21,7 @@ public:
     virtual unsigned int        getSpriteHeight();
     virtual void                setPixelSize(unsigned int width, unsigned int height);
     virtual bool                setPosition(Point<int> const &);
+    virtual void                update(UInt32 time, EventReceiver const &eventReceiver);
     virtual ~APlayer();
 protected:
     double             _speed;

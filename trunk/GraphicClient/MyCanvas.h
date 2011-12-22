@@ -19,7 +19,6 @@ private :
     virtual void onUpdate();
 
 private:
-    AnimatedImage   *_a;
     sf::Clock       _clock;
 };
 

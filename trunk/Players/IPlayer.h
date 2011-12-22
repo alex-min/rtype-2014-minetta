@@ -31,6 +31,7 @@ public:
     virtual unsigned int    getSpriteHeight() = 0;
     virtual void            setPixelSize(unsigned int width, unsigned int height) = 0;
     virtual bool            setPosition(Point<int> const &) = 0;
+    virtual void            update(UInt32 time, EventReceiver const &eventReceiver) = 0;
     virtual ~IPlayer() {}
 };
 

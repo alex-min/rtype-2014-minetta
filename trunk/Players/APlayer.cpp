@@ -37,7 +37,7 @@ Point<int> const    &APlayer::getPosition()
 
 void                APlayer::die()
 {
-     _isDead = true;
+    _isDead = true;
 }
 
 bool                APlayer::isDead()
@@ -80,4 +80,9 @@ bool                APlayer::setPosition(Point<int> const &origine)
 {
     _position = origine;
     return (true);
+}
+
+void                update(UInt32 time, EventReceiver const &eventReceiver)
+{
+
 }

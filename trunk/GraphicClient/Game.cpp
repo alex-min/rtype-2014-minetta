@@ -5,29 +5,37 @@
 Game::Game()
 {
     _background = 0;
+
+    _a = new AnimatedImage("r-typesheet42.png");
+
+    _a->parseFile();
 }
 
 void        Game::eventLoop(MyCanvas &app, sf::Clock &clock)
 {
-    sf::Event Event;
+    sf::Event event;
 
-    while (app.GetEvent(Event))
+    while (app.GetEvent(event))
+        _eventReceiver.OnEvent(event);
+
+    if (_eventReceiver.isKeyPressed(sf::Key::Escape))
     {
-        if ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape))
-        {
-            std::cout << "Window Closed !" << std::endl;
-            qApp->quit();
-        }
+        std::cout << "Window Closed." << std::endl;
+        qApp->quit();
     }
 
-    // Get elapsed time since last frame (we could as well use App.GetFrameTime())
-    float ElapsedTime = clock.GetElapsedTime();
+    if (_eventReceiver.isKeyPressed(sf::Key::Right))
+    {
+        sf::Sprite *sprite = _a->getSpriteList().front();
+
+        float ElapsedTime = clock.GetElapsedTime();
+
+        sprite->SetPosition(sprite->GetPosition().x + ElapsedTime * 500, sprite->GetPosition().y);
+    }
+
     clock.Reset();
 
-    //           if (App.GetInput().IsKeyDown(sf::Key::Left))  Left -= Speed * ElapsedTime;
-    //           if (App.GetInput().IsKeyDown(sf::Key::Right)) Left += Speed * ElapsedTime;
-    //           if (App.GetInput().IsKeyDown(sf::Key::Up))    Top  -= Speed * ElapsedTime;
-    //           if (App.GetInput().IsKeyDown(sf::Key::Down))  Top  += Speed * ElapsedTime;
+    app.Draw(*(_a->getSpriteList().front()));
 }
 
 bool        Game::loadBackground(std::string const &filename)
