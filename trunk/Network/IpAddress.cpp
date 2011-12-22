@@ -6,7 +6,7 @@ IpAddress::IpAddress(const String &ip)
     IpAddress::set(ip);
 }
 
-IpAddress::IpAddress(Int8 a, Int8 b, Int8 c, Int8 d)
+IpAddress::IpAddress(UInt8 a, UInt8 b, UInt8 c, UInt8 d)
 {
     IpAddress::set(a, b, c, d);
 }
@@ -16,7 +16,8 @@ IpAddress::IpAddress(const char *ip)
     IpAddress::set(ip);
 }
 
-void IpAddress::set(Int32 ip) {
+void IpAddress::set(UInt32 ip) {
+    std::cout << ip << std::endl;
     _addr[0] = ip & 0xff;
     ip >>= 8;
     _addr[1] = ip & 0xff;
@@ -38,7 +39,7 @@ void IpAddress::set(const String &ip)
     delete s;
 }
 
-void IpAddress::set(Int8 a, Int8 b, Int8 c, Int8 d)
+void IpAddress::set(UInt8 a, UInt8 b, UInt8 c, UInt8 d)
 {
     _addr[0] = a;
     _addr[1] = b;

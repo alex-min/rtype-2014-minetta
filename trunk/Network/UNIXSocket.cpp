@@ -7,6 +7,7 @@ namespace Network {
 
 sockaddr_in addressToSockAddr(Network::IpAddress const &ip, UInt16 port)
     {
+        LOG << "MIAM : " << ip.toString() << std::endl;
         sockaddr_in addr;
         libc::ZeroMemory(&addr, sizeof(addr));
         addr.sin_family = AF_INET;
@@ -109,7 +110,7 @@ void            UNIXSocket::UDPConnectWithoutSocket(Network::IpAddress const &re
     _udpClientToServerPort = port;
     _type = ISocket::UDP;
     _fakesocket = true;
-    UNIXSocket::setRemoteIp(_sin.sin_addr.s_addr);
+    UNIXSocket::setRemoteIp(remote);
     UNIXSocket::setRemotePort(ntohs(_sin.sin_port));
 }
 
@@ -147,8 +148,6 @@ UInt16           UNIXSocket::sendFake(Network::IpAddress const &remote, UInt32 p
     if (!UNIXSocket::isConnected() || _type != ISocket::UDP)
         throw NetworkDisconnect();
     sockaddr_in sin = Network::addressToSockAddr(remote, port);
-    LOG << "sending fake to " << inet_ntoa(sin.sin_addr) << " " << ntohs(sin.sin_port) << " "
-        << (char *) data << " ( " << len << ")" << std::endl;
    Int16 ret = ::sendto(_fakesocketreference, data, len,
                         MSG_NOSIGNAL, (struct sockaddr *) &sin, sizeof(sin));
 
@@ -186,9 +185,9 @@ UInt16           UNIXSocket::readFrom(Network::IpAddress *remote, UInt16 *port, 
     if (!UNIXSocket::isConnected() || !port || !data)
         throw NetworkDisconnect();
     Int16 size = ::recvfrom(_sock, data, len, 0, (struct sockaddr *) &_udpSinTmp, &_udpLenTmp);
+    LOGERR << "RECEVED from" << inet_ntoa(_udpSinTmp.sin_addr) << std::endl;
     remote->set(_udpSinTmp.sin_addr.s_addr);
     *port = ntohs(_udpSinTmp.sin_port);
-
     if (size == 0 || size == -1)
     {
         UNIXSocket::disconnect();

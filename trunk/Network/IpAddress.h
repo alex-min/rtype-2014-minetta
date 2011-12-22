@@ -30,10 +30,10 @@ class IpAddress
 public:
     IpAddress(const String &ip);
     IpAddress(const char *ip);
-    IpAddress(Int8 a = 127, Int8 b = 0, Int8 c = 0, Int8 d = 1);
+    IpAddress(UInt8 a = 127, UInt8 b = 0, UInt8 c = 0, UInt8 d = 1);
     void set(const String &ip);
-    void set(Int8 a, Int8 b, Int8 c, Int8 d);
-    void set(Int32 ip);
+    void set(UInt8 a, UInt8 b, UInt8 c, UInt8 d);
+    void set(UInt32 ip);
     String const & toString() const;
     Int8 const & toArray() const;
     Int32  toInt() const;
@@ -42,7 +42,7 @@ public:
 
 
 protected:
-    Int8 _addr[4];
+    UInt8 _addr[4];
     String _str;
 };
 }

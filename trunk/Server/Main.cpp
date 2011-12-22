@@ -13,6 +13,9 @@ int	main(int ac, char **av)
     (void) ac;
     (void) av;
     try {
+    Network::IpAddress p;
+
+
 
     Protocol::Protocol proto;
 

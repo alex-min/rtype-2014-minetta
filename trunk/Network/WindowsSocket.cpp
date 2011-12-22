@@ -127,7 +127,7 @@ void            WindowsSocket::UDPConnectWithoutSocket(Network::IpAddress const 
     _udpClientToServerPort = port;
     _type = ISocket::UDP;
     _fakesocket = true;
-    WindowsSocket::setRemoteIp(_sin.sin_addr.s_addr);
+    WindowsSocket::setRemoteIp(remote);
     WindowsSocket::setRemotePort(ntohs(_sin.sin_port));
 }
 
