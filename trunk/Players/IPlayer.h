@@ -1,9 +1,7 @@
 #ifndef IPLAYER_H
 #define IPLAYER_H
 
-#include "AnimatedImage.h"
 #include "Point.h"
-#include "EventReceiver.h"
 
 class IPlayer
 {
@@ -15,8 +13,8 @@ public:
         DOWN,
         UNKNOWN
     };
-    virtual const AnimatedImage *getSprite() = 0;
-    virtual void            setSprite(AnimatedImage *sprite, unsigned int imgWidth, unsigned int imgHeight) = 0;
+    virtual const void *getSprite() = 0;
+    virtual void            setSprite(void *sprite, unsigned int imgWidth, unsigned int imgHeight) = 0;
     virtual double          getSpeed() = 0;
     // Speed en pixel/ms
     virtual void            setSpeed(double speed) = 0;
@@ -32,7 +30,7 @@ public:
     virtual unsigned int    getSpriteHeight() = 0;
     virtual void            setPixelSize(unsigned int width, unsigned int height) = 0;
     virtual bool            setPosition(Point<int> const &) = 0;
-    virtual void            update(UInt32 time, EventReceiver const &eventReceiver) = 0;
+    virtual Point<int> const &getOldPosition() = 0;
     virtual ~IPlayer() {}
 };
 

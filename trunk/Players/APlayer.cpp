@@ -4,12 +4,12 @@ APlayer::APlayer(double speed) : _speed(speed), _position(Point<int>(0,0)), _spr
 {
 }
 
-const AnimatedImage          *APlayer::getSprite()
+const void          *APlayer::getSprite()
 {
     return (_sprite);
 }
 
-void                APlayer::setSprite(AnimatedImage *sprite, unsigned int imgWidth, unsigned int imgHeight)
+void                APlayer::setSprite(void *sprite, unsigned int imgWidth, unsigned int imgHeight)
 {
     _sprite = sprite;
     _widthSize = imgWidth;
@@ -78,11 +78,12 @@ void                APlayer::setPixelSize(unsigned int width, unsigned int heigh
 
 bool                APlayer::setPosition(Point<int> const &origine)
 {
+	_oldPosition = _position;
     _position = origine;
     return (true);
 }
 
-void                APlayer::update(UInt32 time, EventReceiver const &eventReceiver)
+Point<int> const & APlayer::getOldPosition()
 {
-
+	return (_oldPosition);
 }

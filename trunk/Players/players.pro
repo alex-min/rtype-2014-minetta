@@ -3,7 +3,6 @@ CONFIG(PLAYERS_MODULE) {
 INCLUDEPATH += $$PWD
 
 include(../Common/Common.pro)
-include(../SfmlCommon/SfmlCommon.pro)
 
 HEADERS += \
     $$PWD/APlayer.h \
