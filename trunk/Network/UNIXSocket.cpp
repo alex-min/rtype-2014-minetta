@@ -146,8 +146,9 @@ UInt16           UNIXSocket::sendFake(Network::IpAddress const &remote, UInt32 p
 {
     if (!UNIXSocket::isConnected() || _type != ISocket::UDP)
         throw NetworkDisconnect();
-    sockaddr_in sin = Network::addressToSockAddr(remote, htons(port));
-
+    sockaddr_in sin = Network::addressToSockAddr(remote, port);
+    LOG << "sending fake to " << inet_ntoa(sin.sin_addr) << " " << ntohs(sin.sin_port) << " "
+        << (char *) data << " ( " << len << ")" << std::endl;
    Int16 ret = ::sendto(_fakesocketreference, data, len,
                         MSG_NOSIGNAL, (struct sockaddr *) &sin, sizeof(sin));
 
@@ -186,7 +187,8 @@ UInt16           UNIXSocket::readFrom(Network::IpAddress *remote, UInt16 *port, 
         throw NetworkDisconnect();
     Int16 size = ::recvfrom(_sock, data, len, 0, (struct sockaddr *) &_udpSinTmp, &_udpLenTmp);
     remote->set(_udpSinTmp.sin_addr.s_addr);
-    *port = (_udpSinTmp.sin_port);
+    *port = ntohs(_udpSinTmp.sin_port);
+
     if (size == 0 || size == -1)
     {
         UNIXSocket::disconnect();
@@ -288,7 +290,7 @@ bool            UNIXSocket::createUDPServerSocket(UInt16 port)
 
       libc::ZeroMemory(&servaddr, sizeof(servaddr));
       servaddr.sin_family = AF_INET;
-      servaddr.sin_addr.s_addr=htonl(INADDR_ANY);
+      servaddr.sin_addr.s_addr=(INADDR_ANY);
       servaddr.sin_port=htons(port);
       if (::bind(_sock,(struct sockaddr *)&servaddr,sizeof(servaddr)) == -1) {
           std::cout << "[-] Cannot create server socket" << std::endl;

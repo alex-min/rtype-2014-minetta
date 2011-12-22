@@ -166,7 +166,7 @@ UInt16           WindowsSocket::sendFake(Network::IpAddress const &remote, UInt3
     Network::startNetwork();
     if (!WindowsSocket::isConnected() || _type != ISocket::UDP)
         throw NetworkDisconnect();
-    sockaddr_in sin = Network::addressToSockAddr(remote, htons(port));
+    sockaddr_in sin = Network::addressToSockAddr(remote, port);
 
    Int16 ret = ::sendto(_fakesocketreference, static_cast<const char *> (data), len,
                         0, (struct sockaddr *) &sin, sizeof(sin));
@@ -208,7 +208,7 @@ UInt16           WindowsSocket::readFrom(Network::IpAddress *remote, UInt16 *por
         throw NetworkDisconnect();
     Int16 size = ::recvfrom(_sock, reinterpret_cast<char *> (data), len, 0, (struct sockaddr *) &_udpSinTmp, &_udpLenTmp);
     remote->set(_udpSinTmp.sin_addr.s_addr);
-    *port = (_udpSinTmp.sin_port);
+    *port = ntohs(_udpSinTmp.sin_port);
     if (size == 0 || size == -1)
     {
         WindowsSocket::disconnect();
