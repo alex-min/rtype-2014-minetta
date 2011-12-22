@@ -2,6 +2,7 @@
 
 namespace Protocol {
 LoginMapper::LoginMapper() :
+    _playerId(0),
     _invalidString("")
 {
 }
@@ -19,16 +20,28 @@ String const & LoginMapper::getLogin(Network::IpAddress const &addr, UInt16 port
     UInt64 checkPort = port;
     checkPort <<= 32;
     checkIp |= checkPort;
-    std::map< UInt64, String >::const_iterator it;
+    std::map< UInt64, std::pair<String, UInt16 > >::const_iterator it;
     it = _mapping.find(checkIp);
     if (it == _mapping.end())
         return (_invalidString);
-    return (it->second);
+    return (it->second.first);
 }
 
 void        LoginMapper::setLogin(String const &login, Network::Network const *net)
 {
+    if (net && net->getSocket())
+        LoginMapper::setLogin(login, net->getSocket()->getRemoteIp(),
+                              net->getSocket()->getRemotePort());
+}
 
+void        LoginMapper::setLogin(String const &login, Network::IpAddress const &addr, UInt16 port)
+{
+    UInt64 checkIp = addr.toInt();
+    UInt64 checkPort = port;
+    checkPort <<= 32;
+    checkIp |= checkPort;
+    _mapping[checkIp] = std::pair<String, UInt16 > (login, _playerId);
+    _playerId++;
 }
 
 } // !namespace : Protocol

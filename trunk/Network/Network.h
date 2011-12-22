@@ -15,6 +15,7 @@ public:
     CircularBuffer *    getReadBuffer();
     CircularBuffer *    getWriteBuffer();
     MySocket *          getSocket();
+    MySocket *          getSocket() const;
     void                setSocket(MySocket *sock);
     std::string const & getName() const;
     void                setName(std::string const &);

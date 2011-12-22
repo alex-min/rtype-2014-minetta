@@ -21,8 +21,11 @@ win32: LIBS += "$$PWD/../lib/libws2_32_win32.a"
 
 HEADERS += \
     Protocol/Packet.h \
-    Protocol/LoginMapper.h
+    Protocol/LoginMapper.h \
+    Protocol/NetworkSlot.h \
+    Protocol/Protocol.h
 
 SOURCES += \
     Protocol/Packet.cpp \
-    Protocol/LoginMapper.cpp
+    Protocol/LoginMapper.cpp \
+    Protocol/Protocol.cpp

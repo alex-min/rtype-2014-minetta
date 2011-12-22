@@ -31,6 +31,11 @@ MySocket *Network::getSocket()
     return (_socket);
 }
 
+MySocket *Network::getSocket() const
+{
+    return (_socket);
+}
+
 void Network::setSocket(MySocket *sock)
 {
     _socket = sock;
