@@ -67,11 +67,11 @@ bool    AnimatedImage::parseFile()
     bool pixelOnLine = false;
     bool pixelOnColumn = false;
 
-    for (Int32 y = 0; y < sizeY; y++)
+    for (Int32 y = 0; y < sizeY; ++y)
     {
         bool pixLineTest = false;
 
-        for (Int32 x = 0; x < sizeX; x++)
+        for (Int32 x = 0; x < sizeX; ++x)
         {
             if (_sprite.GetPixel(x, y).a != 0 && pixelOnLine == false)
             {

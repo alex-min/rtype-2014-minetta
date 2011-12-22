@@ -8,8 +8,7 @@ CONFIG(GRAPHICCLIENT_MODULE) {
 } else {
 INCLUDEPATH += $$PWD
 
-include(./SfmlCommon/SfmlCommon.pro)
-include(./Players/players.pro)
+include(./Players/HumanPlayer/HumanPlayer.pro)
 
 INCLUDEPATH += ./SfmlCommon/
 

@@ -6,12 +6,20 @@ Game::Game()
 {
     _background = 0;
 
-    _a = new AnimatedImage("r-typesheet42.png");
+    AnimatedImage *a = new AnimatedImage("r-typesheet42.png");
 
-    _a->parseFile();
+    a->parseFile();
+
+    _humanPlayer = new HumanPlayer();
+    _humanPlayer->setSprite(a, 10, 10);
 }
 
-void        Game::eventLoop(MyCanvas &app, sf::Clock &clock)
+//void        Game::updateSprites()
+//{
+//    Point<float> p = _humanPlayer->getPosition()
+//}
+
+void        Game::eventLoop(MyCanvas &app, GameClock &clock)
 {
     sf::Event event;
 
@@ -24,18 +32,19 @@ void        Game::eventLoop(MyCanvas &app, sf::Clock &clock)
         qApp->quit();
     }
 
-    if (_eventReceiver.isKeyPressed(sf::Key::Right))
-    {
-        sf::Sprite *sprite = _a->getSpriteList().front();
+    UInt32 elapsedTime = clock.getOldTime() - clock.getCurrentTime();
 
-        float ElapsedTime = clock.GetElapsedTime();
+    clock.setOldTime(clock.getCurrentTime());
 
-        sprite->SetPosition(sprite->GetPosition().x + ElapsedTime * 500, sprite->GetPosition().y);
-    }
+    _humanPlayer->update(elapsedTime, _eventReceiver);
 
-    clock.Reset();
+//    updateSprites();
 
-    app.Draw(*(_a->getSpriteList().front()));
+    AnimatedImage *animatedImage = reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite());
+
+    sf::Sprite *sprite = animatedImage->getSpriteList().front();
+
+    app.Draw(*sprite);
 }
 
 bool        Game::loadBackground(std::string const &filename)

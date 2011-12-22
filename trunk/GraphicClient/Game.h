@@ -3,12 +3,13 @@
 
 #include <list>
 #include "Singleton.h"
-#include "AnimatedImage.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "APlayer.h"
+#include "HumanPlayer.h"
 
 class MyCanvas;
+class GameClock;
 
 class Game
 {
@@ -17,14 +18,13 @@ public:
     bool        loadBackground(std::string const &filename);
     Image const *getBackground() const;
     Image       *getBackground();
-    void        eventLoop(MyCanvas &app, sf::Clock &clock);
+    void        eventLoop(MyCanvas &app, GameClock &clock);
     ~Game();
 private:
 
     EventReceiver   _eventReceiver;
     Image *_background;
-    AnimatedImage   *_a;
-
+    HumanPlayer     *_humanPlayer;
     //    std::list<Player>    _players;
     //    std::list<Monster>  _monsters;
 

@@ -1,23 +1,30 @@
 #include "APlayer.h"
 
-APlayer::APlayer(double speed) : _speed(speed), _position(Point<int>(0,0)), _sprite(0), _isDead(0), _widthSize(0), _heightSize(0)
+APlayer::APlayer(double speed, void *sprite, bool isDead) :
+
+    _speed(speed),
+    _sprite(sprite),
+    _isDead(isDead)
 {
+
 }
 
-const void          *APlayer::getSprite()
+void          *APlayer::getSprite()
 {
     return (_sprite);
 }
 
-void                APlayer::setSprite(void *sprite, unsigned int imgWidth, unsigned int imgHeight)
+void                APlayer::setSprite(void *sprite, float imgWidth, float imgHeight)
 {
     _sprite = sprite;
-    _widthSize = imgWidth;
-    _heightSize = imgHeight;
+
+    _w = imgWidth;
+    _h = imgHeight;
 }
 
 APlayer::~APlayer()
 {
+
 }
 
 double        APlayer::getSpeed()
@@ -30,11 +37,6 @@ void                APlayer::setSpeed(double speed)
     _speed = speed;
 }
 
-Point<int> const    &APlayer::getPosition()
-{
-    return (_position);
-}
-
 void                APlayer::die()
 {
     _isDead = true;
@@ -45,45 +47,34 @@ bool                APlayer::isDead()
     return (_isDead);
 }
 
-bool                APlayer::spawn(const Point<int> &origine)
+void                APlayer::spawn(const Point<float> &origine)
 {
-    _position = origine;
-    return (true);
+    _pos = origine;
+    _isDead = false;
 }
 
-unsigned int        APlayer::getSpriteWidth()
+float        APlayer::getSpriteWidth()
 {
-    return (_widthSize);
+    return (_w);
 }
 
 void                APlayer::erase()
 {
-    _widthSize = 0;
-    _heightSize = 0;
+    _w = 0;
+    _h = 0;
     _speed = 0;
     _isDead = true;
     _sprite = 0;
+    _pos.setCoord(0, 0);
 }
 
-unsigned int        APlayer::getSpriteHeight()
+float        APlayer::getSpriteHeight()
 {
-    return (_heightSize);
+    return (_h);
 }
 
-void                APlayer::setPixelSize(unsigned int width, unsigned int height)
+void                APlayer::setSize(float width, float height)
 {
-    _widthSize = width;
-    _heightSize = height;
-}
-
-bool                APlayer::setPosition(Point<int> const &origine)
-{
-	_oldPosition = _position;
-    _position = origine;
-    return (true);
-}
-
-Point<int> const & APlayer::getOldPosition()
-{
-	return (_oldPosition);
+    _w = width;
+    _h = height;
 }

@@ -17,8 +17,6 @@ void UNIXTime::setToMsTimeOfDay()
     //std::cout << "Timems : " << _timems << std::endl;
 }
 
-
-
 unsigned long long UNIXTime::getMs() const
 {
     return (_timems);

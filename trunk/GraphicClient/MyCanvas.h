@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "AnimatedImage.h"
 #include "Singleton.h"
+#include "GameClock.h"
 
 class MyCanvas : public QSFMLCanvas
 {
@@ -19,7 +20,7 @@ private :
     virtual void onUpdate();
 
 private:
-    sf::Clock       _clock;
+    GameClock       _clock;
 };
 
 #endif // MYCANVAS_H
