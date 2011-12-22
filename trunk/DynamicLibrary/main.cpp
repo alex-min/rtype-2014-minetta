@@ -1,9 +1,23 @@
-#include "WinDynaLib.hpp"
+#include "UnixDynaLib.hpp"
+#include "IPlayer.h"
+
 
 int main()
 {
-    WinDynaLib  _lib;
+    UnixDynaLib  _lib;
+    void *fct;
+    IPlayer *monster;
 
-    _lib.dynaLoad("testTinyMonster.dll");
-     _lib.funcLoad("create");
+    try{
+
+    _lib.dynaLoad("./libtinymonster.so");
+    fct = _lib.funcLoad("create");
+    monster =
+               ((monsterCall) (fct))(1,1,1,1,1);
+    std::cout << monster->getSpeed() << std::endl;
+    }
+    catch (Exception *e)
+    {
+        std::cout << e->what() << std::endl;
+    }
 }
