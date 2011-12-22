@@ -14,19 +14,13 @@ void            TinyMonster::shoot()
     // TODO
 }
 
-void            TinyMonster::move(const Direction &dir)
+void            TinyMonster::update(UInt32 time)
 {
-    (void) dir;
-    _position.setX(_speed * _totalTime);
-    _position.setY(_origine + (_amplitude * cos(_position.getX() /
-                                                (_screenWidth / (_nbOscillation * 2 * M_PI)))));
-    _position.setX(_screenWidth - _position.getX());
-}
-
-void            TinyMonster::doSomeActions(int time)
-{
-    _totalTime += time;
-    move(IPlayer::LEFT);
+       _totalTime += time;
+       _pos.setX(_speed * _totalTime);
+       _pos.setY(_origine + (_amplitude * cos(_pos.getX() /
+                                                   (_screenWidth / (_nbOscillation * 2 * M_PI)))));
+       _pos.setX(_screenWidth - _pos.getX());
 }
 
 TinyMonster::~TinyMonster()
@@ -34,11 +28,8 @@ TinyMonster::~TinyMonster()
 
 }
 
-extern "C"
-{
-    IPlayer *create(unsigned int screenWidth, unsigned int screenHeight,
+extern "C" IPlayer *create(unsigned int screenWidth, unsigned int screenHeight,
                     unsigned int amplitude, unsigned int origine, unsigned int nbOscillation)
     {
         return (new TinyMonster(screenWidth, screenHeight, amplitude, origine, nbOscillation));
     }
-}

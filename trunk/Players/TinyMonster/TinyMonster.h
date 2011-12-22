@@ -16,11 +16,10 @@
 class TINYMONSTERSHARED_EXPORT TinyMonster : public APlayer
 {
 public:
-    TinyMonster(unsigned int screenWidth, unsigned int screenHeight, unsigned int amplitude,
-               unsigned int origine, unsigned int nbOscillation = 10);
+    TinyMonster(unsigned int screenWidth, unsigned int screenHeight,
+                unsigned int amplitude, unsigned int origine, unsigned int nbOscillation);
     virtual void            shoot();
-    virtual void            move(const Direction &);
-    virtual void            doSomeActions(int time);
+    void    update(UInt32 time);
     virtual ~TinyMonster();
 private:
     unsigned int _screenWidth;

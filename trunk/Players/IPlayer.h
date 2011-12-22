@@ -15,7 +15,7 @@ public:
         DOWN,
         UNKNOWN
     };
-    virtual const void *getSprite() = 0;
+    virtual void            *getSprite() = 0;
     virtual void            setSprite(void *sprite, float imgWidth, float imgHeight) = 0;
     virtual double          getSpeed() = 0;
     virtual void            setSpeed(double speed) = 0;
