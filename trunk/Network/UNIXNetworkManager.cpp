@@ -1,4 +1,5 @@
 #include "UNIXNetworkManager.h"
+#ifdef OS_UNIX
 
 UNIXNetworkManager::UNIXNetworkManager() :
     _maxfd(-1),
@@ -297,3 +298,4 @@ void UNIXNetworkManager::setSlotListener(Network::NetworkManagerSlot *slot)
 {
     _slot = slot;
 }
+#endif

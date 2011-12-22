@@ -1,9 +1,9 @@
 #ifndef MYNETWORKMANAGER_H
 #define MYNETWORKMANAGER_H
 #ifdef OS_WINDOWS
-#include "WindowsSocket.h"
+#include "WindowsNetworkManager.h"
 namespace Network {
-typedef WindowsSocket MySocket;
+typedef class WindowsNetworkManager MyNetworkManager;
 } // !namespace : Network
 #elif defined OS_UNIX
 #include "UNIXNetworkManager.h"

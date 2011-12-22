@@ -40,16 +40,19 @@ unix {
 
 win32 {
     HEADERS += \
-    $$PWD/WindowsSocket.h
+    $$PWD/WindowsSocket.h \
+    $$PWD/WindowsNetworkManager.h
+
 
 SOURCES += \
-    $$PWD/WindowsSocket.cpp
+    $$PWD/WindowsSocket.cpp \
+    $$PWD/WindowsNetworkManager.cpp
+
 }
 
  CONFIG += NETWORK_MODULE
  DEFINES += NETWORK_MODULE
 }
 
-HEADERS += \
 
-SOURCES +=
+

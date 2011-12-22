@@ -1,5 +1,6 @@
 #ifndef UNIXNETWORKMANAGER_H
 #define UNIXNETWORKMANAGER_H
+#ifdef OS_UNIX
 #include "INetworkManager.h"
 #include "Network.h"
 #include <list>
@@ -49,5 +50,5 @@ protected:
     Network::NetworkManagerSlot *_slot;
     std::map<UInt64, Network::Network *> _udpMapping;
 };
-
+#endif
 #endif // UNIXNETWORKMANAGER_H

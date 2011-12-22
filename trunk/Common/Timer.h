@@ -7,9 +7,9 @@ class	Timer
 {
 public:
   Timer();  
-  void		setTime(Uint32 ms);
+  void		setTime(UInt32 ms);
   UInt32	getTime() const;
-  bool		subTime(Uint32 gameTime);
+  bool		subTime(UInt32 gameTime);
   bool		isDone() const;
   void		sleepDifference(void);
   ~Timer();
