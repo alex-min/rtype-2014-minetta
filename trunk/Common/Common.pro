@@ -19,7 +19,8 @@ HEADERS += \
     $$PWD/ConfLoader.hpp \
     $$PWD/Exception.h \
     $$PWD/BaseRegex.h \
-    $$PWD/SystemDefines.h
+    $$PWD/SystemDefines.h \
+    $$PWD/Timer.h
 
 SOURCES += \
     $$PWD/MyString.cpp \
@@ -29,7 +30,9 @@ SOURCES += \
     $$PWD/PThreadMutex.cpp \
     $$PWD/ConfLoader.cpp \
     $$PWD/Exception.cpp \
-    $$PWD/BaseRegex.cpp
+    $$PWD/BaseRegex.cpp \
+    $$PWD/Timer.cpp
+
 
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
