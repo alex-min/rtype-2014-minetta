@@ -3,6 +3,7 @@
 #include "MySocket.h"
 #include "MyNetworkManager.h"
 #include "Protocol.h"
+#include "ProtocolImplement.h"
 
 #ifndef COMMON_MODULE
 #error "Common module not found"
@@ -13,6 +14,8 @@ int	main(int ac, char **av)
     (void) ac;
     (void) av;
     try {
+        ConnectionSlot slot;
+
     Network::IpAddress p;
 
 
@@ -23,6 +26,7 @@ int	main(int ac, char **av)
     Network::MySocket sock;
     Network::MySocket tcpsock;
 
+    proto.registerSlotType(Protocol::CONNECT, &slot);
     m.setSlotListener(&proto);
 
     sock.createUDPServerSocket(1216);

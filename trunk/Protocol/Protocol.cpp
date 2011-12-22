@@ -87,6 +87,7 @@ void            Protocol::dispatchPacket(Network::Network *caller)
     Packet *packetRegistred = Protocol::getPacketFrom(caller, _extractedHeader->_packetId);
     if (packetRegistred) {
         packetRegistred->setHeader(_extractedHeader);
+        packetRegistred->setData(_mainBuffer + sizeof(NetworkPacket::NetworkHeader));
         if (packetRegistred->getSlot() && packetRegistred->getSlotCall())
             (packetRegistred->getSlot()->*packetRegistred->getSlotCall())(false, packetRegistred);
         Protocol::unregisterPacket(packetRegistred);
@@ -102,9 +103,10 @@ void            Protocol::dispatchPacket(Network::Network *caller)
         p->setNetwork(caller);
         p->setTimeout(0);
         p->setHeader(_extractedHeader);
+        p->setData(_mainBuffer + sizeof(NetworkPacket::NetworkHeader));
         _slotPacketMap[
                 static_cast<SlotType>(_extractedHeader->_slotType)
-                ]->onCall(false, p);
+                ]->onCall(false, p, this);
         _packetFactory.invalidate(p);
     }
 }

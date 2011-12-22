@@ -20,11 +20,13 @@ public:
     UInt64                                      getTimeout() const;
     Protocol::NetworkSlot                       *getSlot();
     Protocol::SlotCall                          getSlotCall();
+    void                                        *getData();
     void                                        setNetwork(Network::Network *);
     void                                        setTimeout(UInt64 timeout);
     void                                        setHeader(Protocol::NetworkPacket::NetworkHeader *);
     void                                        setSlot(Protocol::NetworkSlot *);
     void                                        setSlotCall(Protocol::SlotCall);
+    void                                        setData(void *);
     void                                        erase();
 
 protected:
@@ -33,6 +35,7 @@ protected:
     UInt64                                       _timeout;
     Protocol::NetworkSlot                  *     _netSlot;
     Protocol::SlotCall                           _netSlotCall;
+    void                                   *     _data;
 };
 
 #endif // PACKET_H

@@ -8,11 +8,17 @@ Packet::Packet(Network::Network *net,
         _net(net),
         _timeout(timemout),
         _netSlot(netSlot),
-        _netSlotCall(netSlotCall)
+        _netSlotCall(netSlotCall),
+        _data(NULL)
 {
     if (head) {
         libc::Memcpy(&_header, head, sizeof(Protocol::NetworkPacket::NetworkHeader));
     }
+}
+
+void                                        *Packet::getData()
+{
+    return (_data);
 }
 
 Network::Network *                          Packet::getNetwork() const
@@ -71,6 +77,11 @@ void                                        Packet::setSlot(Protocol::NetworkSlo
 void                                        Packet::setSlotCall(Protocol::SlotCall slotCall)
 {
     _netSlotCall =  slotCall;
+}
+
+void                                        Packet::setData(void *data)
+{
+    _data = data;
 }
 
 void                                        Packet::erase()

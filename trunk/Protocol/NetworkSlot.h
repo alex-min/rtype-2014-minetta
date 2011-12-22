@@ -6,9 +6,11 @@ class Packet;
 
 namespace Protocol {
 
+class Protocol;
+
 class NetworkSlot {
 public:
-    virtual void onCall(bool isOnTimeout, Packet *packet) {
+    virtual void onCall(bool isOnTimeout, Packet *packet, Protocol *) {
         (void) isOnTimeout;
         (void) packet;
         LOGERR << " packet not handled, dropping..." << std::endl;
