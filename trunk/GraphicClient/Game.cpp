@@ -21,6 +21,11 @@ Game::Game()
 
 void        Game::eventLoop(MyCanvas &app, GameClock &clock)
 {
+    static sf::Clock cl;
+
+    std::cout << "sfml -> elapsedTime: " << cl.GetElapsedTime() << std::endl;
+    cl.Reset();
+
     sf::Event event;
 
     while (app.GetEvent(event))
@@ -34,6 +39,8 @@ void        Game::eventLoop(MyCanvas &app, GameClock &clock)
 
     UInt32 elapsedTime = clock.getOldTime() - clock.getCurrentTime();
 
+    std::cout << "GameClock: elapsedTime: " << elapsedTime << std::endl;
+
     clock.setOldTime(clock.getCurrentTime());
 
     _humanPlayer->update(elapsedTime, _eventReceiver);
@@ -43,6 +50,7 @@ void        Game::eventLoop(MyCanvas &app, GameClock &clock)
     AnimatedImage *animatedImage = reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite());
 
     sf::Sprite *sprite = animatedImage->getSpriteList().front();
+    sprite->SetPosition(_humanPlayer->getPosition().getX(), _humanPlayer->getPosition().getY());
 
     app.Draw(*sprite);
 }

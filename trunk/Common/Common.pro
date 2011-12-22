@@ -33,6 +33,7 @@ SOURCES += \
     $$PWD/Exception.cpp \
     $$PWD/BaseRegex.cpp \
     $$PWD/Timer.cpp \
+    $$PWD/GameClock.cpp
 
 
 win32: DEFINES += OS_WINDOWS
