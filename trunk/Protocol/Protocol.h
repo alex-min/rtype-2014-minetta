@@ -17,9 +17,14 @@ enum {
      };
 
 enum SlotType {
+    CONNECT, DISCONNECT, CONNECTED, CREATE_GAME,
+    JOIN_GAME, LEAVE_GAME, END_GAME, STATUS,
+    DEAD, MOVE, POP, PING, PONG,
     UNKNOWN
 };
 
+enum eStatusReceived {VALID, INVALID, INCOMPLETE};
+enum StatusId {OK, FAILED, USED, GAME_FULL, COMPLETE, GAME_OVER};
 
     struct NetworkPacket
     {
