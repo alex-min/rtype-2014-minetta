@@ -33,3 +33,12 @@ TinyMonster::~TinyMonster()
 {
 
 }
+
+extern "C"
+{
+    IPlayer *create(unsigned int screenWidth, unsigned int screenHeight,
+                    unsigned int amplitude, unsigned int origine, unsigned int nbOscillation)
+    {
+        return (new TinyMonster(screenWidth, screenHeight, amplitude, origine, nbOscillation));
+    }
+}

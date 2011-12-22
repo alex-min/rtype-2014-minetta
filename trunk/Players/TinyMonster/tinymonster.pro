@@ -1,9 +1,10 @@
 CONFIG(TINYMONSTER_MODULE) {
 } else {
 INCLUDEPATH += $$PWD
-
+QT       -= core gui
+TARGET = tinymonster
+DEFINES += TINYMONSTER_LIBRARY
 include(../players.pro)
-include(../../winLib/sfmllib.pro)
 TEMPLATE = lib
 CONFIG += dll
 
@@ -17,6 +18,6 @@ SOURCES += \
  DEFINES += TINYMONSTER_MODULE
 }
 
-SOURCES += \
-    main.cpp
+SOURCES +=
+
 

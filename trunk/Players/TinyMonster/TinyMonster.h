@@ -5,7 +5,15 @@
 #include "APlayer.h"
 #include "Exception.h"
 
-class TinyMonster : public APlayer
+#include <QtCore/qglobal.h>
+
+#if defined(TINYMONSTER_LIBRARY)
+#  define TINYMONSTERSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define TINYMONSTERSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+class TINYMONSTERSHARED_EXPORT TinyMonster : public APlayer
 {
 public:
     TinyMonster(unsigned int screenWidth, unsigned int screenHeight, unsigned int amplitude,
