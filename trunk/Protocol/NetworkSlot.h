@@ -1,12 +1,18 @@
 #ifndef NETWORKSLOT_H
 #define NETWORKSLOT_H
+#include "SystemDefines.h"
 
 class Packet;
 
 namespace Protocol {
 
 class NetworkSlot {
-    virtual void onCall(bool isOnTimeout, Packet *packet) = 0;
+public:
+    virtual void onCall(bool isOnTimeout, Packet *packet) {
+        (void) isOnTimeout;
+        (void) packet;
+        LOGERR << " packet not handled, dropping..." << std::endl;
+    }
 };
 
 typedef void (NetworkSlot::*SlotCall)(bool timeout, Packet *);

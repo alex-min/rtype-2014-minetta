@@ -53,8 +53,8 @@ protected:
     int _num_active;
 };
 
-// Usage : Pool(Packet *)::getInstance()->generate
+// Usage : PoolSingleton(Packet *)::getInstance()->generate
 
-#define Pool(a) Singleton< PoolFactory < a > >
+#define PoolSingleton(a) Singleton< PoolFactory < a > >
 
 #endif // POOL_H

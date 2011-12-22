@@ -155,6 +155,7 @@ void UNIXNetworkManager::tcpClientReadEvent(Network::Network *net)
             ":" << net->getSocket()->getRemotePort() << std::endl;
         if (_slot) _slot->onDisconnect(net);
         UNIXNetworkManager::removeNetwork(net);
+        throw;
     }
 }
 
@@ -172,7 +173,8 @@ void UNIXNetworkManager::udpClientWriteEvent(Network::Network *net)
         LOGERR << "Client disconnected from udp://" << net->getSocket()->getRemoteIp() <<
             ":" << net->getSocket()->getRemotePort() << std::endl;
         if (_slot) _slot->onDisconnect(net);
-        //UNIXNetworkManager::removeNetwork(net);
+        UNIXNetworkManager::removeNetwork(net);
+        throw;
     }
 }
 
@@ -191,6 +193,7 @@ void UNIXNetworkManager::udpServerReadEvent(Network::Network *net)
     } catch (NetworkDisconnect &) {
         if (_slot) _slot->onDisconnect(net);
         UNIXNetworkManager::removeNetwork(net);
+        throw;
     }
 }
 
@@ -249,6 +252,7 @@ void  UNIXNetworkManager::parseNetworkList()
 {
     while (1)
     {
+        try {
         for (std::list<Network::Network *>::iterator it = _network.begin(); it != _network.end()
              ; ++it)
         {
@@ -268,6 +272,7 @@ void  UNIXNetworkManager::parseNetworkList()
             }
         }
         return ;
+        } catch (...) {}
     }
 }
 
