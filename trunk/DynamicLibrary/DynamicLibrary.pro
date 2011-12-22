@@ -2,6 +2,8 @@ CONFIG(DYNAMICLIB_MODULE) {
 } else {
 INCLUDEPATH += $$PWD
 
+include(../Common/common.pro)
+
 win32: DEFINES += OS_WINDOWS
 unix: DEFINES += OS_UNIX
 

@@ -2,6 +2,7 @@
 #define IDYNALIB_H_
 
 #include <iostream>
+#include "Exception.h"
 
 class IDynaLib
 {
