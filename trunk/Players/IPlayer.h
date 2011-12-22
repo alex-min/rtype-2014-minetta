@@ -3,6 +3,7 @@
 
 #include "AnimatedImage.h"
 #include "Point.h"
+#include "EventReceiver.h"
 
 class IPlayer
 {

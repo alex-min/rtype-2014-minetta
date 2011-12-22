@@ -13,7 +13,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/Image.cpp \
-    $$PWD/AnimatedImage.cpp
+    $$PWD/AnimatedImage.cpp \
     $$PWD/EventReceiver.cpp
 
  CONFIG += SFMLCOMMON_MODULE

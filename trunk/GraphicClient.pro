@@ -21,12 +21,10 @@ TEMPLATE = app
 SOURCES += $$PWD/GraphicClient/main.cpp\
     $$PWD/GraphicClient/QSFMLCanvas.cpp \
     $$PWD/GraphicClient/MyCanvas.cpp \
-    $$PWD/GraphicClient/EventReceiver.cpp \
     $$PWD/GraphicClient/Game.cpp
 
 HEADERS  += $$PWD/GraphicClient/QSFMLCanvas.h \
     $$PWD/GraphicClient/MyCanvas.h \
-    $$PWD/GraphicClient/EventReceiver.h \
     $$PWD/GraphicClient/Game.h
 
  CONFIG += GRAPHICCLIENT_MODULE

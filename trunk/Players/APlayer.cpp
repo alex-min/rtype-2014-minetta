@@ -82,7 +82,7 @@ bool                APlayer::setPosition(Point<int> const &origine)
     return (true);
 }
 
-void                update(UInt32 time, EventReceiver const &eventReceiver)
+void                APlayer::update(UInt32 time, EventReceiver const &eventReceiver)
 {
 
 }
