@@ -1,10 +1,12 @@
 #include "APlayer.h"
 
-APlayer::APlayer(double speed, void *sprite, bool isDead) :
+APlayer::APlayer() :
 
-    _speed(speed),
-    _sprite(sprite),
-    _isDead(isDead)
+    _speed(0.0),
+    _sprite(0),
+    _isDead(true),
+    _screenWidth(0.0),
+    _screenHeight(0.0)
 {
 
 }

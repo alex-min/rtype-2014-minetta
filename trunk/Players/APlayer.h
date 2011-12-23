@@ -7,7 +7,7 @@
 class APlayer : public IPlayer
 {
 public:
-    APlayer(double speed = 0.0, void *sprite = 0, bool isDead = true);
+    APlayer();
     virtual void *              getSprite();
     virtual void                setSprite(void *sprite, float imgWidth, float imgHeight);
     virtual double              getSpeed();
