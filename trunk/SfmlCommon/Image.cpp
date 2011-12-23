@@ -3,6 +3,8 @@
 Image::Image()
 {
     _imageLoaded = false;
+    _name = "";
+    _fullName = "";
 }
 
 Image::Image(std::string const &filename)
@@ -22,8 +24,9 @@ bool    Image::loadImage(std::string const &filename)
         return (false);
 
     _sprite.SetImage(_image);
+    _name = filename;
+    _fullName = (std::string(IMAGEPATH) + filename);
     _imageLoaded = true;
-
     return (true);
 }
 
@@ -40,6 +43,16 @@ void    Image::setSprite(sf::Image const &image)
 sf::Sprite  &Image::getSprite()
 {
     return (_sprite);
+}
+
+std::string const &Image::getName() const
+{
+    return (_name);
+}
+
+std::string const &Image::getFullName() const
+{
+    return (_fullName);
 }
 
 Image::~Image()
