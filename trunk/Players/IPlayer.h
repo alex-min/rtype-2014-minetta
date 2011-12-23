@@ -27,7 +27,8 @@ public:
     virtual float           getSpriteWidth() = 0;
     virtual float           getSpriteHeight() = 0;
     virtual void            setSize(float width, float height) = 0;
-    virtual void                setScreenSize(float screenWidth, float screenHeight) = 0;
+    virtual void            setScreenSize(UInt32 screenWidth, UInt32 screenHeight) = 0;
+    virtual void            setOrigin(Point<float> const &origin) = 0;
     virtual ~IPlayer() {}
 };
 

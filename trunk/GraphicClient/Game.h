@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <list>
+#include <QSize>
 #include "Singleton.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
@@ -20,6 +21,9 @@ public:
     Image       *getBackground();
     void        eventLoop(MyCanvas &app);
     void        updateSprites(sf::Sprite *playerSprite);
+    void        setScreenSize(QSize const &screenSize);
+    void        updateScreenSize();
+
     ~Game();
 private:
 
@@ -27,7 +31,8 @@ private:
     Image *_background;
     HumanPlayer     *_humanPlayer;
     MyTime _old_time;
-     MyTime _cur_time;
+    MyTime _cur_time;
+    QSize   _screenSize;
     //    std::list<Player>    _players;
     //    std::list<Monster>  _monsters;
 

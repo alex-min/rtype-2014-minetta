@@ -39,6 +39,7 @@ void            HumanPlayer::shoot(void *)
 
 void            HumanPlayer::moveLeft(UInt32 time)
 {
+  //  if ((_pos.getX() - (time *_speed)) > _)
     _pos.setX(_pos.getX() - (time *_speed));
 }
 

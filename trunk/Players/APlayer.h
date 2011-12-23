@@ -19,15 +19,17 @@ public:
     virtual void                erase();
     virtual float               getSpriteHeight();
     virtual void                setSize(float width, float height);
-    virtual void                setScreenSize(float screenWidth, float screenHeight);
+    virtual void                setScreenSize(UInt32 screenWidth, UInt32 screenHeight);
+    virtual void                setOrigin(Point<float> const &origin);
     virtual ~APlayer();
 
 protected:
     double                      _speed;
     void                        *_sprite;
     bool                        _isDead;
-    float                       _screenWidth;
-    float                       _screenHeight;
+    UInt32                      _screenWidth;
+    UInt32                      _screenHeight;
+    Point<float>                _origin;
 };
 
 #endif // APLAYER_H

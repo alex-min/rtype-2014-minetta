@@ -5,8 +5,8 @@ APlayer::APlayer() :
     _speed(0.0),
     _sprite(0),
     _isDead(true),
-    _screenWidth(0.0),
-    _screenHeight(0.0)
+    _screenWidth(0),
+    _screenHeight(0)
 {
 
 }
@@ -70,6 +70,11 @@ void                APlayer::erase()
     _pos.setCoord(0, 0);
 }
 
+void                APlayer::setOrigin(Point<float> const &origin)
+{
+    _origin = origin;
+}
+
 float        APlayer::getSpriteHeight()
 {
     return (_h);
@@ -81,7 +86,7 @@ void                APlayer::setSize(float width, float height)
     _h = height;
 }
 
-void                APlayer::setScreenSize(float screenWidth, float screenHeight)
+void                APlayer::setScreenSize(UInt32 screenWidth, UInt32 screenHeight)
 {
     _screenWidth = screenWidth;
     _screenHeight = screenHeight;

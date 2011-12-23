@@ -7,7 +7,7 @@ MyCanvas::MyCanvas(QWidget* parent, const QPoint& position, const QSize& size, U
 
 void MyCanvas::onInit()
 {
-
+    GameSingleton::getInstance()->setScreenSize(_size);
 }
 
 void MyCanvas::onUpdate()

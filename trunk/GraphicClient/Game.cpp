@@ -7,13 +7,19 @@ Game::Game()
 {
     _background = 0;
 
-    AnimatedImage *a = new AnimatedImage("r-typesheet40.png");
+    AnimatedImage *a = new AnimatedImage("r-typesheet42.png");
 
     a->parseFile();
 
     _humanPlayer = new HumanPlayer();
     _humanPlayer->setSprite(a, a->getCurrentSprite()->GetSize().x, a->getCurrentSprite()->GetSize().y);
+
     _old_time.setToMsTimeOfDay();
+}
+
+void        Game::updateScreenSize()
+{
+   _humanPlayer->setScreenSize(_screenSize.width(), _screenSize.height());
 }
 
 void        Game::updateSprites(sf::Sprite *playerSprite)
@@ -45,6 +51,11 @@ void        Game::eventLoop(MyCanvas &app)
     updateSprites(sprite);
 
     app.Draw(*sprite);
+}
+
+void        Game::setScreenSize(QSize const &screenSize)
+{
+    _screenSize = screenSize;
 }
 
 bool        Game::loadBackground(std::string const &filename)
