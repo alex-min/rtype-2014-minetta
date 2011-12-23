@@ -16,5 +16,5 @@ void MyCanvas::onUpdate()
 
     //    if (GameSingleton::getInstance()->getBackground())
 
-    GameSingleton::getInstance()->eventLoop(*this, _clock);
+    GameSingleton::getInstance()->eventLoop(*this);
 }

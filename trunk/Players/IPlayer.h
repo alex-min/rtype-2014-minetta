@@ -19,7 +19,7 @@ public:
     virtual void            setSprite(void *sprite, float imgWidth, float imgHeight) = 0;
     virtual double          getSpeed() = 0;
     virtual void            setSpeed(double speed) = 0;
-    virtual void            shoot() = 0;
+    virtual void            shoot(void *) = 0;
     virtual void            die() = 0;
     virtual bool            isDead() = 0;
     virtual void            spawn(Point<float> const &) = 0;

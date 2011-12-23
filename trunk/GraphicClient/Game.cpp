@@ -12,7 +12,7 @@ Game::Game()
     a->parseFile();
 
     _humanPlayer = new HumanPlayer();
-    _humanPlayer->setSprite(a, 10, 10);
+    _humanPlayer->setSprite(a, a->getCurrentSprite()->GetSize().x, a->getCurrentSprite()->GetSize().y);
     _old_time.setToMsTimeOfDay();
 }
 
@@ -21,7 +21,7 @@ Game::Game()
 //    Point<float> p = _humanPlayer->getPosition()
 //}
 
-void        Game::eventLoop(MyCanvas &app, sf::Clock &clock)
+void        Game::eventLoop(MyCanvas &app)
 {
     sf::Event event;
 

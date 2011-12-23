@@ -10,7 +10,6 @@
 #include "ITime.h"
 
 class MyCanvas;
-class GameClock;
 
 class Game
 {
@@ -19,7 +18,7 @@ public:
     bool        loadBackground(std::string const &filename);
     Image const *getBackground() const;
     Image       *getBackground();
-    void        eventLoop(MyCanvas &app, sf::Clock &clock);
+    void        eventLoop(MyCanvas &app);
     ~Game();
 private:
 
