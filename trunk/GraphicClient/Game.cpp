@@ -16,10 +16,12 @@ Game::Game()
     _old_time.setToMsTimeOfDay();
 }
 
-//void        Game::updateSprites()
-//{
-//    Point<float> p = _humanPlayer->getPosition()
-//}
+void        Game::updateSprites(sf::Sprite *playerSprite)
+{
+    Point<float> p = _humanPlayer->getPosition();
+
+    playerSprite->SetPosition(_humanPlayer->getX(), _humanPlayer->getY());
+}
 
 void        Game::eventLoop(MyCanvas &app)
 {
@@ -38,12 +40,9 @@ void        Game::eventLoop(MyCanvas &app)
     _humanPlayer->update(_cur_time.getMs() - _old_time.getMs(), _eventReceiver);
     _old_time.setToMsTimeOfDay();
 
-//    updateSprites();
+    sf::Sprite *sprite = reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite())->getCurrentSprite();
 
-    AnimatedImage *animatedImage = reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite());
-
-    sf::Sprite *sprite = animatedImage->getSpriteList().front();
-    sprite->SetPosition(_humanPlayer->getPosition().getX(), _humanPlayer->getPosition().getY());
+    updateSprites(sprite);
 
     app.Draw(*sprite);
 }

@@ -19,6 +19,7 @@ public:
     Image const *getBackground() const;
     Image       *getBackground();
     void        eventLoop(MyCanvas &app);
+    void        updateSprites(sf::Sprite *playerSprite);
     ~Game();
 private:
 
