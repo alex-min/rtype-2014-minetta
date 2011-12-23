@@ -2,12 +2,12 @@
 
 AnimatedImage::AnimatedImage() : Image()
 {
-    _speed = 0;
+    _currentSprite = 0;
 }
 
 AnimatedImage::AnimatedImage(std::string const &filename) : Image(filename)
 {
-    _speed = 0;
+    _currentSprite = 0;
 }
 
 void    AnimatedImage::pinpointColumn(Int32 y, Int32 &beginX, Int32 beginY, Int32 &endX, Int32 &endY, bool &pixelOnLine, bool &pixelOnColumn)
@@ -86,6 +86,8 @@ bool    AnimatedImage::parseFile()
             pinpointColumn(y, beginX, beginY, endX, endY, pixelOnLine, pixelOnColumn);
     }
 
+    _currentSprite = _spriteList.front();
+
     return (true);
 }
 
@@ -111,14 +113,19 @@ std::list<sf::Sprite*>   const &AnimatedImage::getSpriteList()
     return (_spriteList);
 }
 
-UInt32    AnimatedImage::getSpeed() const
+sf::Sprite  *AnimatedImage::getCurrentSprite()
 {
-    return (_speed);
+    return (_currentSprite);
 }
 
-void    AnimatedImage::setSpeed(UInt32 speed)
+sf::Sprite  const *AnimatedImage::getCurrentSprite() const
 {
-    _speed = speed;
+    return (_currentSprite);
+}
+
+void    AnimatedImage::setCurrentSprite(sf::Sprite *currentSprite)
+{
+    _currentSprite = currentSprite;
 }
 
 AnimatedImage::~AnimatedImage()

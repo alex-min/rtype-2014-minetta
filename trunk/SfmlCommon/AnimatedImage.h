@@ -14,8 +14,9 @@ public:
     std::list<sf::Sprite*>   const &getSpriteList();
     sf::Sprite *getSpriteInList(UInt32 id);
     sf::Sprite const *getSpriteInList(UInt32 id) const;
-    UInt32 getSpeed() const;
-    void    setSpeed(UInt32 speed);
+    sf::Sprite  *getCurrentSprite();
+    sf::Sprite  const *getCurrentSprite() const;
+    void                setCurrentSprite(sf::Sprite *currentSprite);
     virtual ~AnimatedImage();
 
 private:
@@ -24,7 +25,7 @@ private:
 
 private:
 std::list<sf::Sprite*> _spriteList;
-UInt32           _speed;
+sf::Sprite            *_currentSprite;
 
 protected:
 
