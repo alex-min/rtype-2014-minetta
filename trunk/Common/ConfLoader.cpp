@@ -27,9 +27,8 @@ ConfLoader::~ConfLoader()
 
 bool ConfLoader::openFile(const std::string & file) 
 { 
-  std::ifstream *f = new std::ifstream(file.c_str());
-  _file = f; 
-  return (!_file->fail());
+  _file = new std::ifstream(file.c_str());
+  return (!(_file->fail()));
 } 
 
 std::string const &ConfLoader::getStringValueOf(std::string const &key) const
@@ -62,8 +61,9 @@ void ConfLoader::parseFile()
 
   while ( ! _file->eof() )
     {
-      if ( ! ( (*_file) >> line ) )
-	throw Exception("Cannot read Conf file");
+      getline((*_file), line);
+      if (_file->bad())
+          throw Exception("Cannot read Conf file");
       if (isLigneValide(line) == true)
 	putLineInDico(line);
     }
