@@ -7,7 +7,7 @@ Game::Game()
 {
     _background = 0;
 
-    AnimatedImage *a = new AnimatedImage("r-typesheet42.png");
+    AnimatedImage *a = new AnimatedImage("r-typesheet40.png");
 
     a->parseFile();
 
