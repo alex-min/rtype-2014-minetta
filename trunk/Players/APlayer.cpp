@@ -78,3 +78,9 @@ void                APlayer::setSize(float width, float height)
     _w = width;
     _h = height;
 }
+
+void                APlayer::setScreenSize(float screenWidth, float screenHeight)
+{
+    _screenWidth = screenWidth;
+    _screenHeight = screenHeight;
+}

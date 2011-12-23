@@ -2,6 +2,7 @@
 #define APLAYER_H
 
 #include "IPlayer.h"
+#include "SystemDefines.h"
 
 class APlayer : public IPlayer
 {
@@ -18,12 +19,15 @@ public:
     virtual void                erase();
     virtual float               getSpriteHeight();
     virtual void                setSize(float width, float height);
+    virtual void                setScreenSize(float screenWidth, float screenHeight);
     virtual ~APlayer();
 
 protected:
     double                      _speed;
     void                        *_sprite;
     bool                        _isDead;
+    float                       _screenWidth;
+    float                       _screenHeight;
 };
 
 #endif // APLAYER_H
