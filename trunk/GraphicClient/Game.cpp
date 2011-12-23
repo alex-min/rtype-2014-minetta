@@ -1,6 +1,7 @@
 #include <QApplication>
 #include "Game.h"
 #include "MyCanvas.h"
+#include "ITime.h"
 
 Game::Game()
 {
@@ -12,6 +13,7 @@ Game::Game()
 
     _humanPlayer = new HumanPlayer();
     _humanPlayer->setSprite(a, 10, 10);
+    _old_time.setToMsTimeOfDay();
 }
 
 //void        Game::updateSprites()
@@ -19,13 +21,8 @@ Game::Game()
 //    Point<float> p = _humanPlayer->getPosition()
 //}
 
-void        Game::eventLoop(MyCanvas &app, GameClock &clock)
+void        Game::eventLoop(MyCanvas &app, sf::Clock &clock)
 {
-    static sf::Clock cl;
-
-    std::cout << "sfml -> elapsedTime: " << cl.GetElapsedTime() << std::endl;
-    cl.Reset();
-
     sf::Event event;
 
     while (app.GetEvent(event))
@@ -37,13 +34,9 @@ void        Game::eventLoop(MyCanvas &app, GameClock &clock)
         qApp->quit();
     }
 
-    UInt32 elapsedTime = clock.getOldTime() - clock.getCurrentTime();
-
-    std::cout << "GameClock: elapsedTime: " << elapsedTime << std::endl;
-
-    clock.setOldTime(clock.getCurrentTime());
-
-    _humanPlayer->update(elapsedTime, _eventReceiver);
+    _cur_time.setToMsTimeOfDay();
+    _humanPlayer->update(_cur_time.getMs() - _old_time.getMs(), _eventReceiver);
+    _old_time.setToMsTimeOfDay();
 
 //    updateSprites();
 

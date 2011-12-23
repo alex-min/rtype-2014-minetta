@@ -13,8 +13,7 @@ void UNIXTime::setToMsTimeOfDay()
     struct timeval t;
 
     ::gettimeofday(&t, NULL);
-    _timems = t.tv_sec * 1000 + t.tv_usec / 10000;
-    //std::cout << "Timems : " << _timems << std::endl;
+    _timems = t.tv_sec * 1000 + t.tv_usec / 1000;
 }
 
 unsigned long long UNIXTime::getMs() const

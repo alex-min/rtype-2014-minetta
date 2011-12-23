@@ -11,7 +11,7 @@ int main(int ac, char **av)
     MainFrame->resize(1500, 800);
     MainFrame->show();
 
-    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(1500, 800), 60);
+    MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(1500, 800), 20);
 
     SFMLView->UseVerticalSync(false);
     SFMLView->show();

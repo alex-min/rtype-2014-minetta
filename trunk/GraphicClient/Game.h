@@ -7,6 +7,7 @@
 #include "SFML/Window.hpp"
 #include "APlayer.h"
 #include "HumanPlayer.h"
+#include "ITime.h"
 
 class MyCanvas;
 class GameClock;
@@ -18,13 +19,15 @@ public:
     bool        loadBackground(std::string const &filename);
     Image const *getBackground() const;
     Image       *getBackground();
-    void        eventLoop(MyCanvas &app, GameClock &clock);
+    void        eventLoop(MyCanvas &app, sf::Clock &clock);
     ~Game();
 private:
 
     EventReceiver   _eventReceiver;
     Image *_background;
     HumanPlayer     *_humanPlayer;
+    MyTime _old_time;
+     MyTime _cur_time;
     //    std::list<Player>    _players;
     //    std::list<Monster>  _monsters;
 

@@ -1,6 +1,5 @@
 #ifndef TIME_H
 #define TIME_H
-#include "portablelibrary.h"
 
 class ITime
 {
@@ -14,8 +13,8 @@ public:
 #include "windowstime.h"
 typedef class Win32Time PortableTime;
 #elif defined OS_UNIX
-#include "unixtime.h"
-typedef class UNIXTime PortableTime;
+#include "UNIXTime.h"
+typedef class UNIXTime MyTime;
 #endif
 
 #endif // TIME_H

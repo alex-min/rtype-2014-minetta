@@ -1,6 +1,6 @@
 #ifndef UNIXTIME_H
 #define UNIXTIME_H
-#include "time.h"
+#include "ITime.h"
 #ifdef OS_UNIX
 #include <sys/time.h>
 #include <time.h>

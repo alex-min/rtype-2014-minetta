@@ -20,7 +20,7 @@ private :
     virtual void onUpdate();
 
 private:
-    GameClock       _clock;
+    sf::Clock       _clock;
 };
 
 #endif // MYCANVAS_H
