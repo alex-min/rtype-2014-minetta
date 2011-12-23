@@ -26,7 +26,7 @@ ConfLoader::~ConfLoader()
 }
 
 bool ConfLoader::openFile(const std::string & file) 
-{ 
+{
   _file = new std::ifstream(file.c_str());
   return (!(_file->fail()));
 } 
