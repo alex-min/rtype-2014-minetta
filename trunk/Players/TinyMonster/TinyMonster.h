@@ -16,14 +16,16 @@
 class TINYMONSTERSHARED_EXPORT TinyMonster : public APlayer
 {
 public:
-    TinyMonster(unsigned int screenWidth, unsigned int screenHeight,
-                unsigned int amplitude, unsigned int origine, unsigned int nbOscillation);
-    virtual void            shoot();
+    TinyMonster();
+    virtual void            shoot(void *);
     void    update(UInt32 time);
     virtual ~TinyMonster();
+    int getAmplitude();
+    void setAmplitude(UInt32 amplitude);
+    int getNbOscillation();
+    void setNbOscillation(UInt32 nbOscillation);
+    bool isOutOfScreen();
 private:
-    unsigned int _screenWidth;
-    unsigned int _screenHeight;
     unsigned int _totalTime;
     unsigned int _amplitude;
     unsigned int _origine;
@@ -32,10 +34,19 @@ private:
 
 extern "C"
 {
-TINYMONSTERSHARED_EXPORT IPlayer *create(unsigned int screenWidth, unsigned int screenHeight,
-                    unsigned int amplitude, unsigned int origine, unsigned int nbOscillation)
+TINYMONSTERSHARED_EXPORT IPlayer *createAndFill(UInt32 screenWidth, UInt32 screenHeight,
+                    UInt32 amplitude, UInt32 origine, UInt32 nbOscillation)
     {
-        return (new TinyMonster(screenWidth, screenHeight, amplitude, origine, nbOscillation));
+        TinyMonster *monster = new TinyMonster();
+        monster->setScreenSize(screenWidth, screenHeight);
+        monster->setAmplitude(amplitude);
+        monster->setPosition(screenWidth, origine);
+        monster->setNbOscillation(nbOscillation);
+        return (monster);
     }
+TINYMONSTERSHARED_EXPORT IPlayer *create()
+{
+    return (new TinyMonster());
+}
 }
 #endif // TINYMONSTER_H
