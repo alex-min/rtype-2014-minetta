@@ -24,7 +24,7 @@ public:
     void setAmplitude(UInt32 amplitude);
     int getNbOscillation();
     void setNbOscillation(UInt32 nbOscillation);
-    bool isOutOfScreen();
+    virtual bool isOutOfScreen();
 private:
     unsigned int _totalTime;
     unsigned int _amplitude;

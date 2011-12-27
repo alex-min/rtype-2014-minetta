@@ -29,6 +29,7 @@ public:
     virtual void            setSize(float width, float height) = 0;
     virtual void            setScreenSize(UInt32 screenWidth, UInt32 screenHeight) = 0;
     virtual void            setOrigin(Point<float> const &origin) = 0;
+    virtual bool            isOutOfScreen() = 0;
     virtual ~IPlayer() {}
 };
 

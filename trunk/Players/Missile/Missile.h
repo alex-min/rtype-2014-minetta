@@ -9,7 +9,7 @@ public:
     Missile();
     virtual void            shoot(void *);
     void    update(UInt32 time);
-    bool isOutOfScreen();
+    virtual bool isOutOfScreen();
     virtual ~Missile();
 private:
     void                    moveLeft(UInt32 time);
