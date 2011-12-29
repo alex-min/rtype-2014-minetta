@@ -27,7 +27,10 @@ public:
     void                                        setSlot(Protocol::NetworkSlot *);
     void                                        setSlotCall(Protocol::SlotCall);
     void                                        setData(void *);
+
+    // pool functions
     void                                        erase();
+    void                                        invalidateEvent();
 
 protected:
     Network::Network                       *     _net;

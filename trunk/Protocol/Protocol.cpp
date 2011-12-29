@@ -61,9 +61,9 @@ void            Protocol::registerNextPacket(Network::Network *net, NetworkSlot 
     _packetMap.push_back(p);
 }
 
-void            Protocol::registerSlotType(SlotType type, NetworkSlot *slot)
+void            Protocol::registerSlotType(SlotType type, NetworkSlot *slot, void *object)
 {
-    _slotPacketMap[type] = slot;
+    _slotPacketMap[type] = std::pair< NetworkSlot *, void *> (slot, object);
 }
 
 void            Protocol::send(Network::Network *net, SlotType packetType,
@@ -72,7 +72,7 @@ void            Protocol::send(Network::Network *net, SlotType packetType,
     _sendingHeader._begin = HEADBYTE;
     _sendingHeader._slotType = packetType;
     _sendingHeader._packetId = _packetCount;
-    _sendingHeader._len = sizeof(NetworkPacket::NetworkHeader) + len;
+    _sendingHeader._len = len;
     _sendingHeader._checksum = 0x4242; // TODO : fix this
     _sendingHeader._checksumData = 0x4242; // TODO : fix this
 
@@ -104,9 +104,10 @@ void            Protocol::dispatchPacket(Network::Network *caller)
         p->setTimeout(0);
         p->setHeader(_extractedHeader);
         p->setData(_mainBuffer + sizeof(NetworkPacket::NetworkHeader));
-        _slotPacketMap[
-                static_cast<SlotType>(_extractedHeader->_slotType)
-                ]->onCall(false, p, this);
+       std::pair< NetworkSlot *, void *> cur = _slotPacketMap[
+               static_cast<SlotType>(_extractedHeader->_slotType)
+               ];
+        cur.first->onCall(false, p, this, cur.second);
         _packetFactory.invalidate(p);
     }
 }
@@ -135,6 +136,19 @@ Packet          *Protocol::getPacketFrom(Network::Network *net, unsigned int id)
                 return (*it);
     }
     return (NULL);
+}
+
+String Protocol::getLoginFromData(const void *data, UInt16 len)
+{
+    String  ret;
+    bool nullTerminated = false;
+
+    for (unsigned int i = 0; i < len; i++) {
+        if (static_cast<const char *> (data)[i] == 0)
+            nullTerminated = true;
+    }
+    std::cerr << " @@stub" << std::endl;
+    return ("");
 }
 
 } // !namespace: Protocol

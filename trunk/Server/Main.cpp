@@ -4,6 +4,7 @@
 #include "MyNetworkManager.h"
 #include "Protocol.h"
 #include "ProtocolImplement.h"
+#include "ServerCore.h"
 
 #ifndef COMMON_MODULE
 #error "Common module not found"
@@ -14,29 +15,8 @@ int	main(int ac, char **av)
     (void) ac;
     (void) av;
     try {
-        ConnectionSlot slot;
-
-    Network::IpAddress p;
-
-
-
-    Protocol::Protocol proto;
-
-    Network::MyNetworkManager m;
-    Network::MySocket sock;
-    Network::MySocket tcpsock;
-
-    proto.registerSlotType(Protocol::CONNECT, &slot);
-    m.setSlotListener(&proto);
-
-    sock.createUDPServerSocket(1216);
-    tcpsock.createTCPServerSocket(5051);
-
-    m.addNetwork(&sock);
-    m.addNetwork(&tcpsock);
-    while (1) {
-        m.run(100);
-    }
+        ServerCore core;
+        core.start(5050);
     } catch (...) {
         std::cerr << "Program stopped with exception" << std::endl;
     }

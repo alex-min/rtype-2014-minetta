@@ -1,22 +1,26 @@
 #ifndef LOGINMAPPER_H
 #define LOGINMAPPER_H
-#include <map>
+#include <list>
 #include "Network.h"
 #include "MyString.h"
 #include "SystemDefines.h"
+#include "PlayerInfo.h"
 
 namespace Protocol {
 class LoginMapper
 {
 public:
+    typedef std::list< PlayerInfo * > MapperType;
+
     LoginMapper();
-    String const & getLogin(Network::Network const *net) const;
-    String const & getLogin(Network::IpAddress const &addr, UInt16 port) const;
-    void        setLogin(String const &login, Network::Network const *net);
-    void        setLogin(String const &login, Network::IpAddress const &addr, UInt16 port);
+    PlayerInfo     *getByLogin(String const &login);
+    PlayerInfo     *getByNetwork(Network::Network const * network);
+    PlayerInfo     *getById(UInt16 id);
+
+    bool        exist(String const &login);
 
 protected:
-    std::map<UInt64, std::pair<String, UInt16 > > _mapping;
+    MapperType                                    _mapping;
     UInt16                                        _playerId;
     String const &                                _invalidString;
 };

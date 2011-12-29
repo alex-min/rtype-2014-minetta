@@ -7,41 +7,47 @@ LoginMapper::LoginMapper() :
 {
 }
 
-String const & LoginMapper::getLogin(Network::Network const *net) const
+PlayerInfo     *LoginMapper::getByLogin(String const &login)
 {
-    return (LoginMapper::getLogin(const_cast<Network::Network *> (net)->getSocket()->getRemoteIp(),
-                                  const_cast<Network::Network *> (net)->getSocket()->getPort()
-                                  ));
+    for (MapperType::iterator it = _mapping.begin(); it != _mapping.end();
+         ++it) {
+        if ((*it)->getLogin() == login) {
+            return (*it);
+        }
+    }
+    return (NULL);
 }
 
-String const & LoginMapper::getLogin(Network::IpAddress const &addr, UInt16 port) const
+PlayerInfo     *LoginMapper::getByNetwork(Network::Network const * network)
 {
-    UInt64 checkIp = addr.toInt();
-    UInt64 checkPort = port;
-    checkPort <<= 32;
-    checkIp |= checkPort;
-    std::map< UInt64, std::pair<String, UInt16 > >::const_iterator it;
-    it = _mapping.find(checkIp);
-    if (it == _mapping.end())
-        return (_invalidString);
-    return (it->second.first);
+    for (MapperType::iterator it = _mapping.begin(); it != _mapping.end();
+         ++it) {
+        if ((*it)->getNetwork() == network) {
+            return (*it);
+        }
+    }
+    return (NULL);
 }
 
-void        LoginMapper::setLogin(String const &login, Network::Network const *net)
+PlayerInfo     *LoginMapper::getById(UInt16 id)
 {
-    if (net && net->getSocket())
-        LoginMapper::setLogin(login, net->getSocket()->getRemoteIp(),
-                              net->getSocket()->getRemotePort());
+    for (MapperType::iterator it = _mapping.begin(); it != _mapping.end();
+         ++it) {
+        if ((*it)->getId() == id) {
+            return (*it);
+        }
+    }
+    return (NULL);
 }
 
-void        LoginMapper::setLogin(String const &login, Network::IpAddress const &addr, UInt16 port)
+
+bool        LoginMapper::exist(String const &login)
 {
-    UInt64 checkIp = addr.toInt();
-    UInt64 checkPort = port;
-    checkPort <<= 32;
-    checkIp |= checkPort;
-    _mapping[checkIp] = std::pair<String, UInt16 > (login, _playerId);
-    _playerId++;
+    PlayerInfo *p = LoginMapper::getByLogin(login);
+    if (!p)
+        return (false);
+    return (true);
 }
+
 
 } // !namespace : Protocol

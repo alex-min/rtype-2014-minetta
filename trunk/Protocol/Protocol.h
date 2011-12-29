@@ -18,7 +18,7 @@ enum {
 
 enum SlotType {
     CONNECT, DISCONNECT, CONNECTED, CREATE_GAME,
-    JOIN_GAME, LEAVE_GAME, END_GAME, STATUS,
+    JOIN_GAME, LIST_GAME, LEAVE_GAME, END_GAME, STATUS,
     DEAD, MOVE, POP, PING, PONG,
     UNKNOWN
 };
@@ -43,7 +43,7 @@ class Protocol : public Network::NetworkManagerSlot
 {
 public:
     typedef std::list<Packet *> IdPacketMap;
-    typedef std::map<SlotType, NetworkSlot *> SlotPacketMap;
+    typedef std::map<SlotType, std::pair< NetworkSlot *, void *> > SlotPacketMap;
 
     Protocol();
     ~Protocol();
@@ -55,7 +55,7 @@ public:
     void            dispatchPacket(Network::Network *caller);
     LoginMapper &   getLoginMapper(); // cannot be const
     void            unregisterPacket(Packet *);
-    void            registerSlotType(SlotType type, NetworkSlot *slot);
+    void            registerSlotType(SlotType type, NetworkSlot *slot, void *object = NULL);
     void            registerNextPacket(Network::Network *net, NetworkSlot *slot, SlotCall call,
                                        UInt16 timeout = DEFAULT_TIMEOUT);
 
@@ -64,6 +64,7 @@ public: // functions below are for special purpose only
     void            send(Network::Network *net, SlotType packetType,
                          const void *content, UInt16 len);
 
+    static      String getLoginFromData(const void *, UInt16 len);
 
 protected:
     char *                          _mainBuffer;

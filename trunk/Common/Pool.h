@@ -43,6 +43,8 @@ public:
     {
         ScopedLock s(&_createInstanceMut);
 
+        if (!a)
+         a->invalidateEvent();
         _active[a] = true;
         _num_active++;
     }

@@ -22,7 +22,9 @@ HEADERS += \
     $$PWD/SystemDefines.h \
     $$PWD/Timer.h \
     $$PWD/ITime.h \
-    $$PWD/UNIXTime.h
+    $$PWD/UNIXTime.h \
+    $$PWD/MySleep.h
+
 
 SOURCES += \
     $$PWD/MyString.cpp \
@@ -46,3 +48,4 @@ win32: LIBS += "$$PWD/../lib/libpthreadGC2_win32.a" \
 DEFINES += COMMON_MODULE
 CONFIG += COMMON_MODULE
 }
+

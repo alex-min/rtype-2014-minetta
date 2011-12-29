@@ -8,12 +8,16 @@ HEADERS += \
     $$PWD/Packet.h \
     $$PWD/LoginMapper.h \
     $$PWD/NetworkSlot.h \
-    $$PWD/Protocol.h
+    $$PWD/Protocol.h \
+    $$PWD/PlayerInfo.h
+
 
 SOURCES += \
     $$PWD/Packet.cpp \
     $$PWD/LoginMapper.cpp \
-    $$PWD/Protocol.cpp
+    $$PWD/Protocol.cpp \
+    $$PWD/PlayerInfo.cpp
+
 
 
 win32: DEFINES += OS_WINDOWS
@@ -24,3 +28,4 @@ win32: LIBS += "$$PWD/../lib/libws2_32_win32.a"
  CONFIG += PROTOCOL_MODULE
  DEFINES += PROTOCOL_MODULE
 }
+

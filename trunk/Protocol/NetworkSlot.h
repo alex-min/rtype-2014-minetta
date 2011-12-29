@@ -10,11 +10,14 @@ class Protocol;
 
 class NetworkSlot {
 public:
-    virtual void onCall(bool isOnTimeout, Packet *packet, Protocol *) {
+    enum {MAX_BUFFER_SIZE};
+    virtual void onCall(bool isOnTimeout, Packet *packet, Protocol *, void *) {
         (void) isOnTimeout;
         (void) packet;
         LOGERR << " packet not handled, dropping..." << std::endl;
     }
+protected:
+    char        _tmpBuffer[MAX_BUFFER_SIZE];
 };
 
 typedef void (NetworkSlot::*SlotCall)(bool timeout, Packet *);

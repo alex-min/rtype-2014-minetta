@@ -92,3 +92,8 @@ void                                        Packet::erase()
     _netSlot = 0;
     _netSlotCall = 0;
 }
+
+void                                        Packet::invalidateEvent()
+{
+    Packet::erase();
+}
