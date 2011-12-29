@@ -24,6 +24,7 @@ public:
     void                    moveDown(UInt32 time);
     void                    update(UInt32 time, EventReceiver &eventReceiver);
     virtual void            setSpeed(double speed);
+    virtual bool            isOutOfScreen();
     virtual                 ~HumanPlayer();
 
 protected:
@@ -35,6 +36,7 @@ protected:
 private:
     static s_movement          _movementTab[5];
     std::list<sf::Key::Code>   _keys;
+    bool                       _outOfScreen;
 };
 
 #endif // HUMANPLAYER_H

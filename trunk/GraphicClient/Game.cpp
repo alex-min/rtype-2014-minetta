@@ -56,6 +56,7 @@ void        Game::eventLoop(MyCanvas &app)
 void        Game::setScreenSize(QSize const &screenSize)
 {
     _screenSize = screenSize;
+    _humanPlayer->setScreenSize(screenSize.width(), screenSize.height());
 }
 
 bool        Game::loadBackground(std::string const &filename)

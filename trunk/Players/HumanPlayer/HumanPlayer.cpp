@@ -13,7 +13,8 @@ HumanPlayer::HumanPlayer() :
     APlayer(),
     _right(false),
     _up(false),
-    _down(false)
+    _down(false),
+    _outOfScreen(false)
 {
     _keys.push_back(sf::Key::Left);
     _keys.push_back(sf::Key::Right);
@@ -36,25 +37,32 @@ void            HumanPlayer::shoot(void *)
 {
     //TODO
 }
+bool            HumanPlayer::isOutOfScreen()
+{
+    return (_outOfScreen);
+}
 
 void            HumanPlayer::moveLeft(UInt32 time)
 {
-  //  if ((_pos.getX() - (time *_speed)) > _)
+    if ((_pos.getX() - (time *_speed)) >= 0)
     _pos.setX(_pos.getX() - (time *_speed));
 }
 
 void            HumanPlayer::moveRight(UInt32 time)
 {
+    if (((_pos.getX() + _w) + (time *_speed)) <= _screenWidth)
     _pos.setX(_pos.getX() + (time *_speed));
 }
 
 void            HumanPlayer::moveUp(UInt32 time)
 {
+    if ((_pos.getY() - (time *_speed)) >= 0)
     _pos.setY(_pos.getY() - (time *_speed));
 }
 
 void            HumanPlayer::moveDown(UInt32 time)
 {
+    if (((_pos.getY() + _h) + (time *_speed)) <= _screenHeight)
     _pos.setY(_pos.getY() + (time *_speed));
 }
 
