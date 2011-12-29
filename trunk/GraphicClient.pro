@@ -9,6 +9,7 @@ CONFIG(GRAPHICCLIENT_MODULE) {
 INCLUDEPATH += $$PWD
 
 include(./Players/HumanPlayer/HumanPlayer.pro)
+include (./AbstractThread/AQThread.pro)
 
 INCLUDEPATH += ./SfmlCommon/
 

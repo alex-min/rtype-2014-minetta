@@ -2,7 +2,8 @@ CONFIG(AQTHREAD_MODULE) {
 } else {
 INCLUDEPATH += $$PWD
 
-HEADERS += $$PWD/CQThread.h
+HEADERS += $$PWD/CQThread.h \
+           $$PWD/IThread.h
 
 SOURCES += $$PWD/CQThread.cpp\
 
