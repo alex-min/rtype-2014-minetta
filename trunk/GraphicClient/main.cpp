@@ -17,9 +17,7 @@ int main(int ac, char **av)
     SFMLView->UseVerticalSync(false);
     SFMLView->show();
 
-    ListenServer *listenServer = new ListenServer;
-
-    listenServer->start();
+    ListenServerSingleton::getInstance()->start();
 
     return app.exec();
 }

@@ -24,12 +24,14 @@ SOURCES += $$PWD/GraphicClient/main.cpp\
     $$PWD/GraphicClient/QSFMLCanvas.cpp \
     $$PWD/GraphicClient/MyCanvas.cpp \
     $$PWD/GraphicClient/Game.cpp \
-    $$PWD/GraphicClient/ListenServer.cpp
+    $$PWD/GraphicClient/ListenServer.cpp \
+    $$PWD/GraphicClient/MoveSlot.cpp
 
 HEADERS  += $$PWD/GraphicClient/QSFMLCanvas.h \
     $$PWD/GraphicClient/MyCanvas.h \
     $$PWD/GraphicClient/Game.h \
-    $$PWD/GraphicClient/ListenServer.h
+    $$PWD/GraphicClient/ListenServer.h \
+    $$PWD/GraphicClient/MoveSlot.h
 
  CONFIG += GRAPHICCLIENT_MODULE
  DEFINES += GRAPHICCLIENT_MODULE

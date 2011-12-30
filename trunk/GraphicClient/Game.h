@@ -3,6 +3,7 @@
 
 #include <list>
 #include <QSize>
+#include <QObject>
 #include "Singleton.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
@@ -12,8 +13,10 @@
 
 class MyCanvas;
 
-class Game
+class Game : public QObject
 {
+    Q_OBJECT
+
 public:
     Game();
     bool        loadBackground(std::string const &filename);
@@ -23,8 +26,10 @@ public:
     void        updateSprites(sf::Sprite *playerSprite);
     void        setScreenSize(QSize const &screenSize);
     void        updateScreenSize();
-
     ~Game();
+
+public slots:
+    void    updatePlayerPos();
 private:
 
     EventReceiver   _eventReceiver;

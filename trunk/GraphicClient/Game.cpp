@@ -82,6 +82,11 @@ Image       *Game::getBackground()
     return (_background);
 }
 
+void    Game::updatePlayerPos()
+{
+
+}
+
 Game::~Game()
 {
     if (_background)
