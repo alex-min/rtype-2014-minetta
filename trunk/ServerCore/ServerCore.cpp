@@ -28,7 +28,7 @@ void    ServerCore::start(UInt16 port)
         throw Exception("ServerCore: Cannot create tcp Socket");
     _net = new Network::Network(&_mainSock);
     _networkManager.setSlotListener(&_proto);
-    _networkManager.addNetwork(net);
+    _networkManager.addNetwork(_net);
     _proto.registerSlotType(Protocol::CONNECT, new ConnectionSlot(), this);
     while (1) {
         _networkManager.run(300);

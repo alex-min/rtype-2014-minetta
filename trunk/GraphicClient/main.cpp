@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include "MyCanvas.h"
 #include "AnimatedImage.h"
+#include "ListenServer.h"
 
 int main(int ac, char **av)
 {
@@ -15,6 +16,10 @@ int main(int ac, char **av)
 
     SFMLView->UseVerticalSync(false);
     SFMLView->show();
+
+    ListenServer *listenServer = new ListenServer;
+
+    listenServer->start();
 
     return app.exec();
 }

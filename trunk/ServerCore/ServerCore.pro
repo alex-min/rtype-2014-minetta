@@ -1,5 +1,10 @@
 CONFIG(SERVERCORE_MODULE) {
 } else {
+
+include(../Network/Network.pro)
+include(../Protocol/Protocol.pro)
+include(../ProtocolImplement/ProtocolImplement.pro)
+
 INCLUDEPATH += $$PWD
 
 HEADERS += \
