@@ -1,8 +1,0 @@
-
-
-void createMissile(Point posMissile, Point vecteurMissile) {
-     
-}
-
-void (*)(Point, Point);
-
