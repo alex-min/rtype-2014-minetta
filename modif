@@ -1,0 +1,18 @@
+modified:   Common/IMutex.h
+#	    modified:   Common/IThread.h
+#	    modified:   Common/Pool.h
+#	    modified:   GraphicClient/ConnectedSlot.cpp
+#	    modified:   GraphicClient/CreateGameSlot.cpp
+#	    modified:   GraphicClient/GamesList.cpp
+#	    modified:   GraphicClient/GamesList.h
+#	    modified:   GraphicClient/ListGameSlot.cpp
+#	    modified:   GraphicClient/ListGameSlot.h
+#	    modified:   GraphicClient/ListenServer.cpp
+#	    modified:   GraphicClient/ListenServer.h
+#	    modified:   GraphicClient/LoginScreen.cpp
+#	    modified:   ProtocolImplement/CreateGameSlot.cpp
+#	    modified:   ProtocolImplement/ListGameSlot.cpp
+#	    modified:   ServerCore/ServerCore.cpp
+#	    modified:   ServerCore/ServerCore.h
+#	    modified:   ServerCore/ServerGame.cpp
+#	    modified:   buildGraphicClient/GraphicClient

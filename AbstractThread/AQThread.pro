@@ -1,0 +1,15 @@
+CONFIG(AQTHREAD_MODULE) {
+} else {
+INCLUDEPATH += $$PWD
+
+HEADERS += $$PWD/CQThread.h \
+           $$PWD/IThread.h
+
+SOURCES += $$PWD/CQThread.cpp\
+
+win32: DEFINES += OS_WINDOWS
+unix: DEFINES += OS_UNIX
+
+DEFINES += AQTHREAD_MODULE
+CONFIG += AQTHREAD_MODULE
+}
