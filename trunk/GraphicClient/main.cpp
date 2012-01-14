@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "MyCanvas.h"
 #include "AnimatedImage.h"
 #include "ListenServer.h"
