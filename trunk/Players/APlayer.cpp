@@ -1,20 +1,19 @@
 #include "APlayer.h"
 
 APlayer::APlayer() :
-
+    _backSprite(0),
+    _available(true),
+    _expW(0),
+    _expH(0),
     _speed(0.0),
     _sprite(0),
+    _explosionSprite(0),
     _isDead(false),
-    _shoot(false),
-    _available(true),
     _screenWidth(0),
     _screenHeight(0),
-    _origin(PointF(0, -1))
+    _origin(PointF(0, -1)),
+    _shoot(false)
 {
-    _expW = 0;
-    _expH = 0;
-    _explosionSprite = NULL;
-    _backSprite = 0;
 }
 
 void    APlayer::setAvailibility(bool available)
