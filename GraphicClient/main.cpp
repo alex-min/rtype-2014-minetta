@@ -39,4 +39,5 @@ int main(int ac, char **av)
     } catch (Exception *e) {
         LOGERR << "Program terminated with " << e->what() << std::endl;
     }
+    return (0);
 }
