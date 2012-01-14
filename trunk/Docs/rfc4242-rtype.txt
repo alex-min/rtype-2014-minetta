@@ -1,0 +1,339 @@
+
+
+
+
+
+
+R-TYPE Group minett_a                                           F. Colin
+Request for Comments: 4242                                         Tek 3
+Category: Experimental                                      January 2012
+
+
+                            R-TYPE Protocol
+							
+Status of this memo
+
+This memo defines an Experimental Protocol for the Internet community.
+This memo does not specify an Internet standard of any kind.  Discussion
+and suggestions for improvement are requested. Distribution of this memo
+is unlimited.
+
+Protocol
+
+This protocol is intended to provide the R-Type project service, and be
+used between clients and servers on host computers. Typically the
+clients are on workstation hosts and the servers on mainframe hosts.
+
+Copyright
+
+Copyright (C) 2011 R-Type Group minett_a and the persons identified as
+member of this group. All Rights Reserved.
+
+Table of Contents
+
+   1. Introduction ....................................................2
+      1.1.  Conventions Used in This Document .........................2
+   2. Session Management ..............................................2
+   3. Message Exchange ................................................3
+   4. Data Unit Format ................................................6
+   5. Internationalization Considerations .............................7
+   6. Security Considerations .........................................7
+   7. References .....................................................11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Colin                         Experimental                      [Page 1]
+
+RFC 4242                    R-TYPE Protocol                 January 2012
+
+
+1.  Introduction
+
+   This document describes the implementation of the protocol for the
+   R-Type project, the header’s format of packets transmitted between
+   the server and clients and the different kind of packet recognized
+   by the protocol. This document also describes the connection process
+   and the game management on the server.
+
+1.1.  Conventions Used in This Document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+2.  Session Management
+
+   A R-Type session is composed of two connections : one using TCP and
+   another one using UDP.
+   At first, it requires the creation of a TCP connection between two
+   peers, one that initiates the connection request and one that
+   responds to the connection request.  The initiating peer is called
+   the "client", and the responding peer is called the "server".  A
+   R-Type server MUST listen for TCP connection requests on a standard
+   TCP port assigned by the user.
+   
+   The client MUST issue an active OPEN call, specifying the TCP port
+   number on which the server is listening for R-Type’s client
+   connection attempts.
+   
+   The TCP connection is used for register on server and game
+   management.
+   
+   The server and the client also MUST launch an UDP connection used for
+   all in-game transmission packets.
+
+   A session is normally ended by the client issuing a <DISCONNECT>
+   command.  A server receiving a <DISCONNECT> command MUST end the
+   session and close the TCP connection. The client MUST close both TCP
+   and UPD connections. After each game, the client MUST close UDP
+   connection.
+
+   A server MAY limit the life span of an established TCP connection.
+   Sessions that are inactive for more than a server-defined period MAY
+   be ended by a server closing the TCP connection. If the client
+   detects its TCP connection with the server is no longer available,
+   it MUST close both its TCP and UDP connections.
+
+
+
+
+
+Colin                         Experimental                      [Page 2]
+
+RFC 4242                    R-TYPE Protocol                 January 2012
+
+
+3.  Message Exchange
+
+   A R-Type server MAY return a response to a command on the same TCP or
+   UDP connection that carried the command.
+   
+   A R-Type client streams R-Type commands to a R-Type server either on
+   an established TCP or UDP connection. A server SHOULD limit a client
+   to a maximum number of TCP connections based on server capabilities
+   and operational load.
+
+   R-Type client-server TCP interaction is a command-response exchange
+   where the client sends one command to the server and the server
+   returns an appropriate response to the client. A client might be able
+   to realize a slight performance gain by pipelining (sending more than
+   one command before a response for the first command is received)
+   commands with TCP transport, but this feature does not change the
+   basic single command, single response operating mode of the core
+   protocol.
+   
+   Each R-Type data unit packet MUST contain a single R-Type message.
+   Commands MUST be processed independently and in the same order as
+   sent from the client.
+   
+   UDP R-Type commands are independents and the server manages and
+   transmits the data between clients connected on a same game.
+
+   
+   General client-server message exchange using TCP and UDP transport
+   are illustrated in Figure 1 and Figure 2.
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+Colin                         Experimental                      [Page 3]
+
+RFC 4242                    R-TYPE Protocol                 January 2012
+
+
+                       Client                  Server
+                  |                                     |
+                  |                CONNECT              |
+                  | >>------------------------------->> |
+                  |                                     |
+                  |               DISCONNECT            |
+                  | >>------------------------------->> |
+                  |                                     |
+				  |               CONNECTED             |
+				  | <<-------------------------------<< |
+				  |                                     |
+				  |                                     |
+				  |              CREATE_GAME            |
+				  | >>------------------------------->> |
+				  |                                     |
+				  |               JOIN_GAME             |
+				  | >>------------------------------->> |
+				  |                                     |
+				  |               REF_GAME              |
+				  | <<-------------------------------<< |
+				  |                                     |
+				  |               LIST_GAME             |
+				  | <<-------------------------------<< |
+				  |                                     |
+				  |              LEAVE_GAME             |
+				  | >>------------------------------->> |
+				  | <<-------------------------------<< |
+				  |                                     |
+				  |                                     |
+				  |                STATUS               |
+				  | <<-------------------------------<< |
+				  |                                     |
+				  
+           Figure 1: TCP Client-Server Type Message Exchange
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Colin                         Experimental                      [Page 4]
+
+RFC 4242                    R-TYPE Protocol                 January 2012
+
+
+                      Client                  Server
+                  |                                     |
+                  |                  DEAD               |
+                  | <<-------------------------------<< |
+                  |                                     |
+                  |                  MOVE               |
+                  | >>------------------------------->> |
+                  | <<-------------------------------<< |
+                  |                                     |
+                  |                  POP                |
+                  | <<-------------------------------<< |
+                  | >>------------------------------->> |
+                  |                                     |
+                  |                                     |
+                  |                  PING               |
+                  | <<-------------------------------<< |
+                  |                                     |
+                  |                  PONG               |
+                  | >>------------------------------->> |
+                  |                                     |
+				  
+           Figure 2: UDP Client-Server Type Message Exchange
+		   
+4.  Data Unit Format
+
+   A R-Type packet contains two fields: a 10 bytes header and the data.
+   The length of the data is given in the header of the packet. A
+   receiver must successfully read header identifier to retrieve the
+   complete data. Format header is described in Figure 3.
+   
+   /------------------------------------------------------------------\
+   |   Type              |   Size      |   Description                |
+   |------------------------------------------------------------------|
+   |   Header            |   1 byte    |   =0x7                       |
+   |   Command Id        |   1 byte    |   Enum based on packet type  |
+   |   Packet Id         |   2 bytes   |   Used for response          |
+   |                     |             |   to a specific packet       |
+   |   Len               |   2 bytes   |   Len of the data            |
+   |   Checksum header   |   2 bytes   |   CRC16 (initialized at 0)   |
+   |   Checksum data     |   2 bytes   |   CRC16 (initialized at 0)   |
+   \------------------------------------------------------------------/
+
+                  Figure 3: Format Header Description
+
+   Total Length (variable length): the header length (10 bytes) plus the
+   data length (variable length).
+
+
+
+
+Colin                         Experimental                      [Page 5]
+
+RFC 4242                    R-TYPE Protocol                 January 2012
+
+
+5.  Internationalization Considerations
+
+   This document does not introduce or present any internationalization
+   or localization issues.
+
+6.  Security Considerations
+
+   This document does not introduce or present any security issues.
+
+7.  References
+
+   [RFC0791]  Postel, J., "Internet Protocol", STD 5, RFC 791,
+              September 1981.
+
+   [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
+              RFC 793, September 1981.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+
+Author's Address
+
+   Frederic Colin
+   Tek 3
+   54000 Nancy
+   Epitech Nancy
+   FRANCE
+
+   EMail: frederic.colin@epitech.eu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Colin                         Experimental                      [Page 6]
+
