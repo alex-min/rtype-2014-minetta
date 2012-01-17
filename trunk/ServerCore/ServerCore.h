@@ -22,10 +22,14 @@ public:
     void            start(UInt16 port);
     ServerGame *    createGame(String const &gameName);
 
+    void            removeGame(ServerGame *);
+
     ServerGame *                        getMapByName(String const &gameName) const;
     Protocol::LoginMapper &             getLoginMapper();
 
     PoolFactory< ServerGame > const &   getGamePool() const;
+
+    Protocol::Protocol   *              getProtocol(); // cannot be const
 
 protected:
     PoolFactory< ServerGame >   _gamePool;

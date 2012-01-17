@@ -19,6 +19,8 @@ public:
     Network::Network const *    getNetwork() const;
     Network::Network *          getNetwork();
 
+    bool                        isDead() const;
+    void                        die();
 
     void                        setLogin(String const &);
     void                        setId(UInt16 id);
@@ -28,6 +30,7 @@ public:
     void                        erase();
 
 protected:
+    bool                        _dead;
     String                      _login;
     UInt16                      _playerId;
     Network::Network const      *_network;

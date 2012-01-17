@@ -2,7 +2,7 @@
 #define MYCANVAS_H
 
 #include "QSFMLCanvas.h"
-#include <Qframe.h>
+#include <QFrame>
 #include "Game.h"
 #include "AnimatedImage.h"
 #include "Singleton.h"

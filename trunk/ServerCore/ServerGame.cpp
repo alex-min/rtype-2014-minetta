@@ -16,6 +16,7 @@ ServerGame::ServerGame() :
     _mapId(0),
     _maxNbPlayer(0)
 {
+    _net = NULL;
     _serverCore = NULL;
     _proto.setDisconnectCallback(&onDisconnectCallback);
     _popSlot = new PopSlot();
@@ -195,6 +196,13 @@ void    ServerGame::erase(ServerCore *)
 
 void    ServerGame::invalidateEvent()
 {
+    _name = "_DEFAULT_GAME_NAME";
+    _mapId = 0;
+    _maxNbPlayer = 0;
+    if (_net)
+    delete _net;
+    ServerGame::getMapperList().clear();
+
     // TODO : kill evrything and pause thread
 }
 

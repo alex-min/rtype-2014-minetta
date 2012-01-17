@@ -7,6 +7,18 @@ LoginMapper::LoginMapper() :
 {
 }
 
+UInt32          LoginMapper::getAlivePlayerCount() const
+{
+    UInt32      alive = 0;
+
+    for (MapperType::const_iterator it = _mapping.begin(); it != _mapping.end();
+         ++it) {
+        if ((*it)->isDead() == false)
+            ++alive;
+    }
+    return (alive);
+}
+
 LoginMapper::MapperType     &LoginMapper::getMapperList()
 {
     return (_mapping);
