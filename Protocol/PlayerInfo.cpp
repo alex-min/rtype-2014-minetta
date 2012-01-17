@@ -30,6 +30,17 @@ _network(NULL),
 _player(NULL)
 { ++_playerCountId; }
 
+
+bool                        PlayerInfo::isDead() const
+{
+    return (_dead);
+}
+
+void                        PlayerInfo::die()
+{
+    _dead = true;
+}
+
 IPlayer                     *PlayerInfo::getPlayer()
 {
     return (_player);

@@ -30,6 +30,8 @@ public:
 
     bool        exist(String const &login);
 
+    UInt32          getAlivePlayerCount() const;
+
 protected:
     PoolFactory < PlayerInfo >                    _playerPool;
     MapperType                                    _mapping;

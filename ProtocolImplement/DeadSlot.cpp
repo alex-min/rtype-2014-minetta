@@ -1,17 +1,26 @@
 #include "DeadSlot.h"
 
-void    DeadSlot::onCall(bool, Packet *p, Protocol::Protocol *proto, void *)
+void    DeadSlot::onCall(bool, Packet *p, Protocol::Protocol *proto, void *c)
 {
-    LOGERR << "DIIEEEEE ! " << std::endl;
     ServerGame *game = reinterpret_cast<ServerGame *> (proto->getPointer());
+    ServerCore *core = reinterpret_cast<ServerCore *> (c);
 
     if (game) {
-        LOGERR << "DIIEEEEE ! 2 (" << game->getMapper().getMapperList().size() << ")" << std::endl;
-
         PlayerInfo *pl = game->getMapper().getByNetwork(p->getNetwork());
 
         if (pl) {
             DeadSlot::sendDeadNotification(proto, pl->getId(), p->getNetwork());
+        }
+
+        pl->die();
+        if (game->getMapper().getAlivePlayerCount() == 0) {
+            LOG << "Game is now at ENNND !" << std::endl;
+            proto->send(p->getNetwork(), Protocol::END_GAME,
+                                      "h", 1);
+            for (unsigned int i = 0; i < 3; i++)
+                game->run();
+            game->kill();
+            core->removeGame(game);
         }
     }
 }

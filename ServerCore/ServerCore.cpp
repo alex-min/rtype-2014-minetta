@@ -9,6 +9,16 @@ ServerCore::~ServerCore()
 
 }
 
+Protocol::Protocol   *              ServerCore::getProtocol()
+{
+    return (&_proto);
+}
+
+void            ServerCore::removeGame(ServerGame *g)
+{
+    _gamePool.invalidate(g);
+}
+
 ServerGame *ServerCore::getMapByName(String const &gameName) const {
     PoolFactory<ServerGame>::ListType const &mapList =_gamePool.getMapList();
         for (PoolFactory<ServerGame>::ListType::const_iterator it = mapList.begin();
