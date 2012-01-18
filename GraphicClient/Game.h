@@ -70,7 +70,6 @@ private:
     std::map<UInt16, IPlayer*> _monsterMissils;
     TinyMonster             *_monster;
     Scrolling            _scroll;
-    MapLoader            *_map;
     MapScrolling         _mapScroll;
     AnimatedImage        *_explosion;
     PoolFactory < IPlayer > _monsterPool;

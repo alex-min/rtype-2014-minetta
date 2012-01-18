@@ -38,7 +38,13 @@ void            MapScrolling::load(UInt8 id)
     String mapId = "";
     mapId = String::toString(id - '0');
 
+    if (_map)
+    {
+        delete _map;
+        _imageMapping.clear();
+    }
     _map = new MapLoader("../map_example" + mapId + ".ma");
+
     MapScrolling::computeSquareSize();
     for (UInt16 i = 0; i < _conf->getSize(); ++i)
     {
@@ -53,7 +59,15 @@ void            MapScrolling::load(UInt8 id)
 void            MapScrolling::erase() {
     _starttime = 0;
     _elapsedTime = 0;
+
+
     _spriteIterator = _wallPool.getMapList().begin();
+
+    PoolFactory<Wall>::ListType & wallmap = _wallPool.getMapList();
+
+    for (PoolFactory<Wall>::ListType::iterator it = wallmap.begin(); it != wallmap.end(); ++it)  {
+        it->second = true;
+    }
 }
 
 void            MapScrolling::setStartTime(UInt64 time)
