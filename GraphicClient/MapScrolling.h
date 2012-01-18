@@ -23,6 +23,8 @@ public:
     void            setStartTime(UInt64 time);
     void            setScreenWidth(UInt32 width);
     void            setScreenHeight(UInt32 height);
+    void            erase();
+
 
 private:
     void            computeSquareSize();

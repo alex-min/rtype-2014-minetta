@@ -74,8 +74,6 @@ Game::Game()
     _scroll.loadBackground("../img/background.png",
                            "../img/background.png");
 
-    _soundsManager->playSound("music");
-
     connect(ListenServerSingleton::getInstance(), SIGNAL(posChanged(UInt16,UInt16,UInt16)), this, SLOT(updatePlayerPos(UInt16,UInt16,UInt16)));
     connect(ListenServerSingleton::getInstance(), SIGNAL(popMonster(UInt16,UInt8,UInt16,UInt16,Int32)), this, SLOT(pop(UInt16,UInt8,UInt16,UInt16,Int32)));
     connect(ListenServerSingleton::getInstance(), SIGNAL(die(UInt16)), this, SLOT(playerDie(UInt16)));
@@ -119,7 +117,8 @@ void        Game::restartEventLoop()
     for (std::map<UInt16, IPlayer*>::iterator it = _missils.begin(); it != _missils.end(); ++it)
         (*it).second->erase();
 
-    _soundsManager->playSound("music");
+    for (std::map<UInt16, IPlayer*>::iterator it = _monsterMissils.begin(); it != _monsterMissils.end(); ++it)
+        (*it).second->erase();
 }
 
 void        Game::activateEndGame()
@@ -152,9 +151,11 @@ void        Game::setStartGame(bool b)
 
     if (b == false)
     {
-        _mapScroll.setStartTime(_old_time.getMs());
         _cur_time.setToMsTimeOfDay();
         _old_time.setToMsTimeOfDay();
+        _mapScroll.erase();
+        _mapScroll.setStartTime(_old_time.getMs());
+        _soundsManager->playSound("music");
     }
 }
 
@@ -288,8 +289,8 @@ void        Game::updateSprites(MyCanvas &app)
             cur.SetPosition(w->getX(), w->getY());
             app.Draw(cur);
             if (!(_humanPlayer->isDead()) && w->intersectWith(*_humanPlayer) /*&&
-                                                                            pixelPerfectCollision(a, reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite()),
-                                                                                                  w, _humanPlayer)*/) {
+                                                                                            pixelPerfectCollision(a, reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite()),
+                                                                                                                  w, _humanPlayer)*/) {
                 _humanPlayer->die();
                 _humanPlayer->switchToExplosionSprite();
                 _soundsManager->playSound("explosion");
@@ -550,6 +551,12 @@ void        Game::eventLoop(MyCanvas &app)
         Game::updateSprites(app);
     else
     {
+        if (_totalTime == 0)
+        {
+            _soundsManager->stopSound("music");
+            _soundsManager->stopSound("missil");
+        }
+
         _totalTime += (_cur_time.getMs() - _old_time.getMs());
         if (_totalTime > 1500)
         {
