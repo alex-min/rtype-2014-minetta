@@ -50,6 +50,12 @@ void            MapScrolling::load(UInt8 id)
 
 }
 
+void            MapScrolling::erase() {
+    _starttime = 0;
+    _elapsedTime = 0;
+    _spriteIterator = _wallPool.getMapList().begin();
+}
+
 void            MapScrolling::setStartTime(UInt64 time)
 {
     _starttime = time;
