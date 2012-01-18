@@ -34,17 +34,27 @@ GameManager::GameManager()
 
     connect(&_loginScreen, SIGNAL(validate()), this, SLOT(swingToGames()));
     connect(&_gamesList, SIGNAL(changeToPreviousScreen()), this, SLOT(comeBackToLoginScreen()));
+    connect(GameSingleton::getInstance(), SIGNAL(returnToGameList()), this, SLOT(switchToGameList()));
     connect(ListenServerSingleton::getInstance(), SIGNAL(gameAccess(bool)), this, SLOT(swingToGameCanvas(bool)));
     connect(ListenServerSingleton::getInstance(), SIGNAL(startGame()), this, SLOT(enterGame()));
 }
 
+void    GameManager::switchToGameList()
+{
+    _gamesList.eraseAll();
+    _gamesList.refresh();
+    _stackLayout.setCurrentWidget(&_gamesList);
+}
+
 void    GameManager::comeBackToLoginScreen()
 {
+    _loginScreen.resetField();
     _stackLayout.setCurrentWidget(&_loginScreen);
 }
 
 void    GameManager::enterGame()
 {
+    GameSingleton::getInstance()->restartEventLoop();
     _sfmlCanvas->setWaitingSprite(false);
 }
 

@@ -42,7 +42,7 @@ void    GamesList::joinGame()
     ListenServerSingleton::getInstance()->joinGame(item->text().toStdString());
 }
 
-bool    GamesList::checkIfGameExist(UInt8 nbPlayer, QString const &gameName) const
+void    GamesList::eraseAll()
 {
     std::map< int, std::list< QTableWidgetItem* > >::const_iterator it = _rowList.begin();
 
@@ -50,9 +50,41 @@ bool    GamesList::checkIfGameExist(UInt8 nbPlayer, QString const &gameName) con
     {
         std::list< QTableWidgetItem* > list = (*it).second;
 
-        if (list.front()->text() == gameName &&
-                list.back()->text().toInt() == static_cast<int>(nbPlayer))
+        QTableWidgetItem *frontItem = list.front();
+        QTableWidgetItem *backItem = list.back();
+
+        _gameList->removeCellWidget(frontItem->row(), frontItem->column());
+        _gameList->removeCellWidget(backItem->row(), frontItem->column());
+
+        list.remove(frontItem);
+        list.remove(backItem);
+
+        delete frontItem;
+        delete backItem;
+    }
+
+    _gameList->setRowCount(0);
+
+    _rowList.clear();
+}
+
+bool    GamesList::checkIfGameExist(QString const &gameName, UInt8 nbMaxPlayer, UInt8 nbPlayer) const
+{
+    std::map< int, std::list< QTableWidgetItem* > >::const_iterator it = _rowList.begin();
+
+    for (; it != _rowList.end(); ++it)
+    {
+        std::list< QTableWidgetItem* > list = (*it).second;
+
+        if (list.front()->text() == gameName)
+        {
+            QTableWidgetItem *item = list.back();
+
+            item->setText(QString::number(static_cast<int>(nbPlayer)) +
+                          QString("/") +
+                          QString::number(static_cast<int>(nbMaxPlayer)));
             return (true);
+        }
     }
 
     return (false);
@@ -60,7 +92,7 @@ bool    GamesList::checkIfGameExist(UInt8 nbPlayer, QString const &gameName) con
 
 void    GamesList::addGame(UInt8 nbPlayer, UInt8 nbMaxPlayer, QString const &gameName)
 {
-    if (!checkIfGameExist(nbPlayer, gameName))
+    if (!checkIfGameExist(gameName, nbMaxPlayer, nbPlayer))
     {
         QTableWidgetItem *first = new QTableWidgetItem(gameName);
         QTableWidgetItem *second = new QTableWidgetItem(QString::number(static_cast<int>(nbPlayer)) +

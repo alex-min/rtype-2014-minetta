@@ -18,7 +18,8 @@ void    changeToPreviousScreen();
 
 public:
     GamesList(QWidget *parent = 0);
-    bool    checkIfGameExist(UInt8 nbPlayer, QString const &gameName) const;
+    bool    checkIfGameExist(QString const &gameName, UInt8 nbMaxPlayer, UInt8 nbPlayer) const;
+    void    eraseAll();
     ~GamesList();
 
 public slots:

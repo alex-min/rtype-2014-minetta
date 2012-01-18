@@ -19,6 +19,7 @@ signals:
 public:
     LoginScreen(QWidget *parent = 0);
     std::string const &getLogin() const;
+    void    resetField();
     ~LoginScreen();
 
 public slots:

@@ -29,6 +29,9 @@ class Game : public QObject
 {
     Q_OBJECT
 
+signals:
+    void        returnToGameList();
+
 public:
     Game();
     bool        loadBackground(std::string const &filename);
@@ -42,12 +45,15 @@ public:
     void        drawWaitingSprite(MyCanvas &app);
     void        setStartGame(bool b);
     void        setMapId(UInt8 mapId);
+    void        affEndGameSprite(MyCanvas &app);
+    void        restartEventLoop();
     ~Game();
 
 public slots:
     void    updatePlayerPos(UInt16 id, UInt16 x, UInt16 y);
     void    pop(UInt16 id,UInt8 monsterType, UInt16 x, UInt16 y, Int32);
     void    playerDie(UInt16 id);
+    void    activateEndGame();
 
 private:
 
@@ -56,6 +62,7 @@ private:
     HumanPlayer         *_humanPlayer;
     MyTime              _old_time;
     MyTime              _old_time_pos;
+    UInt32              _totalTime;
     MyTime              _cur_time;
     QSize               _screenSize;
     std::map<UInt16, IPlayer*> _players;
@@ -70,6 +77,8 @@ private:
     bool                    _started;
     Sounds                  *_soundsManager;
     UInt8                   _mapId;
+    bool                    _endGame;
+    bool                    _stopLoop;
 };
 
 std::map<UInt16, IPlayer *> *            backupMissil(bool save, std::map<UInt16, IPlayer *> *ptr);

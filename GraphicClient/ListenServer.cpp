@@ -20,6 +20,7 @@ ListenServer::ListenServer()
     _proto.registerSlotType(Protocol::POP, PopSlotSingleton::getInstance(), this);
     _proto.registerSlotType(Protocol::START_GAME, StartGameSlotSingleton::getInstance(), this);
     _proto.registerSlotType(Protocol::DEAD, DieSlotSingleton::getInstance(), this);
+    _proto.registerSlotType(Protocol::END_GAME, EndGameSlotSingleton::getInstance(), this);
 
     _networkManager.setSlotListener(&_proto);
     _networkManager.addNetwork(_net);
@@ -37,6 +38,7 @@ ListenServer::ListenServer()
     connect(PopSlotSingleton::getInstance(), SIGNAL(popMonster(UInt16,UInt8,UInt16,UInt16,Int32)), SIGNAL(popMonster(UInt16,UInt8,UInt16,UInt16,Int32)));
     connect(StartGameSlotSingleton::getInstance(), SIGNAL(startGame()), SIGNAL(startGame()));
     connect(DieSlotSingleton::getInstance(), SIGNAL(die(UInt16)), SIGNAL(die(UInt16)));
+    connect(EndGameSlotSingleton::getInstance(), SIGNAL(endGame()), SIGNAL(endGame()));
 }
 
 void ListenServer::registerUdpSocket(bool b, UInt16 port)

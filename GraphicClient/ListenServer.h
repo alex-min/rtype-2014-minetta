@@ -13,6 +13,7 @@
 #include "PopSlot.h"
 #include "StartGameSlot.h"
 #include "DieSlot.h"
+#include "EndGameSlot.h"
 
 class ListenServer : public CQThread
 {
@@ -27,6 +28,7 @@ signals:
     void    popMonster(UInt16 id, UInt8 monsterType, UInt16 x, UInt16 y, Int32 date);
     void    startGame();
     void    die(UInt16 id);
+    void    endGame();
 
 public:
     ListenServer();
