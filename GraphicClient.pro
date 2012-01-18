@@ -44,7 +44,8 @@ SOURCES += $$PWD/GraphicClient/main.cpp\
     $$PWD/GraphicClient/WaitWidget.cpp \
     $$PWD/GraphicClient/StartGameSlot.cpp \
     $$PWD/GraphicClient/DieSlot.cpp \
-    $$PWD/GraphicClient/Sounds.cpp
+    $$PWD/GraphicClient/Sounds.cpp \
+    $$PWD/GraphicClient/EndGameSlot.cpp
 
 HEADERS  += $$PWD/GraphicClient/QSFMLCanvas.h \
     $$PWD/GraphicClient/MyCanvas.h \
@@ -67,7 +68,8 @@ HEADERS  += $$PWD/GraphicClient/QSFMLCanvas.h \
     $$PWD/GraphicClient/StartGameSlot.h \
     $$PWD/GraphicClient/DieSlot.h \
     $$PWD/GraphicClient/ISounds.h \
-    $$PWD/GraphicClient/Sounds.h
+    $$PWD/GraphicClient/Sounds.h \
+    $$PWD/GraphicClient/EndGameSlot.h
 
 unix: LIBS += -lm
 
