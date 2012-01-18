@@ -12,7 +12,6 @@ Game::Game()
     _explosion = new AnimatedImage("explosion.png");
     _explosion->setRepetition(false);
     _explosion->setSpeed(40);
-    _map = new MapLoader("../map_example.map");
     _soundsManager = new Sounds("music.wav", "missil.wav", "explosion.ogg");
     _started = false;
     _mapId = '1';
@@ -92,6 +91,7 @@ void        Game::restartEventLoop()
 
     _old_time.setToMsTimeOfDay();
     _old_time_pos.setToMsTimeOfDay();
+    _mapScroll.load(_mapId);
 
     _totalTime = 0;
 
@@ -673,8 +673,6 @@ void        Game::setScreenSize(QSize const &screenSize)
     _mapScroll.setScreenHeight(_screenSize.height());
     _mapScroll.setScreenWidth(_screenSize.width());
     // TODO : put this line on another place
-    _mapScroll.load(_mapId);
-
 
     _humanPlayer->setScreenSize(_screenSize.width(), _screenSize.height());
 
@@ -762,6 +760,4 @@ Game::~Game()
 {
     if (_background)
         delete _background;
-    if (_map)
-        delete _map;
 }

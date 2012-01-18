@@ -55,6 +55,7 @@ void    GameManager::comeBackToLoginScreen()
 void    GameManager::enterGame()
 {
     GameSingleton::getInstance()->restartEventLoop();
+
     _sfmlCanvas->setWaitingSprite(false);
 }
 
