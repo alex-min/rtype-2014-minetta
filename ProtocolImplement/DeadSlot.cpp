@@ -15,8 +15,13 @@ void    DeadSlot::onCall(bool, Packet *p, Protocol::Protocol *proto, void *c)
         pl->die();
         if (game->getMapper().getAlivePlayerCount() == 0) {
             LOG << "Game is now at ENNND !" << std::endl;
-            proto->send(p->getNetwork(), Protocol::END_GAME,
+            Protocol::LoginMapper::MapperType &map = game->getMapperList();
+
+            for (Protocol::LoginMapper::MapperType::iterator it = map.begin();
+                 it != map.end(); ++it) {
+                proto->send((*it)->getNetwork(), Protocol::END_GAME,
                                       "h", 1);
+            }
             for (unsigned int i = 0; i < 3; i++)
                 game->run();
             game->kill();
