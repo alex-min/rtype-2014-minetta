@@ -19,6 +19,7 @@ public slots:
     void swingToGameCanvas(bool b);
     void enterGame();
     void comeBackToLoginScreen();
+    void switchToGameList();
 
 private:
     QStackedLayout      _stackLayout;

@@ -16,6 +16,8 @@ Game::Game()
     _soundsManager = new Sounds("music.wav", "missil.wav", "explosion.ogg");
     _started = false;
     _mapId = '1';
+    _endGame = false;
+    _stopLoop = false;
 
     for (UInt16 i = 0; i < 20; i++)
     {
@@ -65,6 +67,7 @@ Game::Game()
 
     _old_time.setToMsTimeOfDay();
     _old_time_pos.setToMsTimeOfDay();
+    _totalTime = 0;
 
     qRegisterMetaType<UInt16>("UInt16");
 
@@ -76,6 +79,52 @@ Game::Game()
     connect(ListenServerSingleton::getInstance(), SIGNAL(posChanged(UInt16,UInt16,UInt16)), this, SLOT(updatePlayerPos(UInt16,UInt16,UInt16)));
     connect(ListenServerSingleton::getInstance(), SIGNAL(popMonster(UInt16,UInt8,UInt16,UInt16,Int32)), this, SLOT(pop(UInt16,UInt8,UInt16,UInt16,Int32)));
     connect(ListenServerSingleton::getInstance(), SIGNAL(die(UInt16)), this, SLOT(playerDie(UInt16)));
+    connect(ListenServerSingleton::getInstance(), SIGNAL(endGame()), this, SLOT(activateEndGame()));
+}
+
+void        Game::restartEventLoop()
+{
+    _stopLoop = false;
+    _endGame = false;
+    _started = false;
+
+    _humanPlayer->erase();
+    _humanPlayer->resetSprites();
+    _humanPlayer->setPosition(10, 10);
+
+    _old_time.setToMsTimeOfDay();
+    _old_time_pos.setToMsTimeOfDay();
+
+    _totalTime = 0;
+
+    for (std::map<UInt16, IPlayer*>::iterator it = _players.begin(); it != _players.end(); ++it)
+    {
+        IPlayer *item = (*it).second;
+
+        _players.erase(it);
+
+        delete item;
+    }
+
+    PoolFactory<IPlayer>::ListType &map = _monsterPool.getMapList();
+    for (PoolFactory<IPlayer>::ListType::iterator it = map.begin(); it != map.end(); ++it)
+    {
+        IPlayer *item = (*it).first;
+
+        map.erase(it);
+
+        delete item;
+    }
+
+    for (std::map<UInt16, IPlayer*>::iterator it = _missils.begin(); it != _missils.end(); ++it)
+        (*it).second->erase();
+
+    _soundsManager->playSound("music");
+}
+
+void        Game::activateEndGame()
+{
+    _endGame = true;
 }
 
 void        Game::setMapId(UInt8 mapId)
@@ -239,8 +288,8 @@ void        Game::updateSprites(MyCanvas &app)
             cur.SetPosition(w->getX(), w->getY());
             app.Draw(cur);
             if (!(_humanPlayer->isDead()) && w->intersectWith(*_humanPlayer) /*&&
-                                    pixelPerfectCollision(a, reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite()),
-                                                          w, _humanPlayer)*/) {
+                                                                            pixelPerfectCollision(a, reinterpret_cast<AnimatedImage *>(_humanPlayer->getSprite()),
+                                                                                                  w, _humanPlayer)*/) {
                 _humanPlayer->die();
                 _humanPlayer->switchToExplosionSprite();
                 _soundsManager->playSound("explosion");
@@ -418,6 +467,8 @@ void        Game::updateSprites(MyCanvas &app)
                     _humanPlayer->die();
                     _humanPlayer->switchToExplosionSprite();
                     _soundsManager->playSound("explosion");
+
+                    ListenServerSingleton::getInstance()->sendDead();
                 }
 
                 monsterMissilSprite->SetPosition(monsterMissil_it->second->getX(), monsterMissil_it->second->getY());
@@ -463,8 +514,25 @@ void        Game::updateAnimatedSprites(MyCanvas &app)
     }
 }
 
+void        Game::affEndGameSprite(MyCanvas &app)
+{
+    sf::Image image;
+    sf::Sprite sprite;
+
+    if (image.LoadFromFile(std::string(IMAGEPATH) + "gameEnd.png") == true)
+    {
+        sprite.SetImage(image);
+
+        sprite.SetPosition((_screenSize.width() / 2) - (sprite.GetSize().x / 2), (_screenSize.height() / 2) - (sprite.GetSize().y / 2));
+        app.Draw(sprite);
+    }
+}
+
 void        Game::eventLoop(MyCanvas &app)
 {
+    if (_stopLoop)
+        return;
+
     sf::Event event;
 
     while (app.GetEvent(event))
@@ -478,7 +546,21 @@ void        Game::eventLoop(MyCanvas &app)
 
     _cur_time.setToMsTimeOfDay();
 
-    Game::updateSprites(app);
+    if (!_endGame)
+        Game::updateSprites(app);
+    else
+    {
+        _totalTime += (_cur_time.getMs() - _old_time.getMs());
+        if (_totalTime > 1500)
+        {
+            _stopLoop = true;
+            _soundsManager->stopSound("music");
+
+            emit    returnToGameList();
+        }
+        else
+            affEndGameSprite(app);
+    }
 
     _old_time.setToMsTimeOfDay();
 }

@@ -43,6 +43,12 @@ LoginScreen::LoginScreen(QWidget *parent) : QWidget(parent)
     connect(ListenServerSingleton::getInstance(), SIGNAL(connected(bool,short)), this, SLOT(validation(bool,short)));
 }
 
+void    LoginScreen::resetField()
+{
+    _availibility.clear();
+    _availibility.setVisible(false);
+}
+
 void    LoginScreen::createGame()
 {
     _createGameScreen.show();
