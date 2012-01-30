@@ -7,6 +7,11 @@
 #include "ServerCore.h"
 #include "TimerPool.h"
 
+#ifdef OS_WINDOWS
+#include <windows.h>
+#define srandom(a) srand(a)
+#endif
+
 #ifndef COMMON_MODULE
 #error "Common module not found"
 #endif
