@@ -542,6 +542,7 @@ void        Game::eventLoop(MyCanvas &app)
     if (_eventReceiver.isKeyPressed(sf::Key::Escape))
     {
         std::cout << "Window Closed." << std::endl;
+        ListenServerSingleton::getInstance()->closeAllSocket();
         qApp->quit();
     }
 

@@ -41,6 +41,7 @@ public:
     void    createGame(std::string const &gameName, char mapId, char nbPlayers);
     void    requestGamesList();
     void    sendMissilPos(float x, float y);
+    void    closeAllSocket();
     ~ListenServer();
 
 public slots:
