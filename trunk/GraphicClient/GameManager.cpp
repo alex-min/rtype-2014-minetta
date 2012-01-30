@@ -63,6 +63,7 @@ void GameManager::swingToGameCanvas(bool b)
 {
     if (b == true)
     {
+        std::cout << "ENVOI LE CONNEEEEEEEEEEEEEEEEEEEEEECTTT !!!" << std::endl;
         ListenServerSingleton::getInstance()->sendConnectUdp(_loginScreen.getLogin());
         _stackLayout.setCurrentWidget(_sfmlCanvas);
         _sfmlCanvas->setWaitingSprite(true);
