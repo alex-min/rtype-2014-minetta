@@ -13,5 +13,6 @@ void StartGameSlot::onCall(bool isOnTimeout, Packet *packet, Protocol::Protocol 
     (void)proto;
     (void)data;
 
+    std::cout << "START GAME !!!" << std::endl;
     emit startGame();
 }
