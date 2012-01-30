@@ -24,12 +24,12 @@ void CreateGameSlot::onCall(bool, Packet *packet, Protocol::Protocol *proto, voi
         LOG << "MapID:" << mapId << " -MaxNbPl:" << (int) nbPl << std::endl;
 
         ServerGame *game = core->createGame(mapName);
-        game->setMapId(mapId);
-        game->setMaxNbPlayer(nbPl);
         if (game) {
+            game->setMapId(mapId);
+            game->setMaxNbPlayer(nbPl);
             s = Protocol::OK;
             proto->send(packet->getNetwork(), Protocol::CREATE_GAME, &s, sizeof(Protocol::StatusId),
-                        packet->getHeader()._packetId);
+                         packet->getHeader()._packetId);
         } else {
             s = Protocol::USED;
             proto->send(packet->getNetwork(), Protocol::CREATE_GAME, &s, sizeof(Protocol::StatusId),
