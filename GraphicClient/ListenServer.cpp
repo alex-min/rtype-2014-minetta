@@ -5,10 +5,11 @@ ListenServer::ListenServer()
 {
     Network::MySocket *sock = new Network::MySocket;
 
+    _net = 0;
     _udpNet = 0;
     _udpConnected = false;
-    _connected = sock->connect("127.0.0.1", 5050);
-    sock->setRemoteIp("127.0.0.1");
+    _connected = sock->connect("10.18.207.136", 5050);
+    sock->setRemoteIp("10.18.207.136");
 
     _net = new Network::Network(sock);
 
@@ -68,7 +69,15 @@ void ListenServer::run()
 void    ListenServer::sendDead()
 {
     if (_udpConnected)
-    DieSlotSingleton::getInstance()->sendDie(&_proto, _udpNet);
+        DieSlotSingleton::getInstance()->sendDie(&_proto, _udpNet);
+}
+
+void    ListenServer::closeAllSocket()
+{
+    if (_net)
+        _net->getSocket()->disconnect();
+    if (_udpNet)
+        _udpNet->getSocket()->disconnect();
 }
 
 void    ListenServer::sendMissilPos(float x, float y)
