@@ -22,7 +22,7 @@ void ListGameSlot::onCall(bool isOnTimeout, Packet *packet, Protocol::Protocol *
 
     UInt8 nbPlayer = libc::Memextract<UInt8>(packet->getData(), sizeof(UInt8), tmpLen);
     UInt8 nbMaxPlayer = libc::Memextract<UInt8>(packet->getData(), sizeof(UInt8), tmpLen);
-    String gameName = proto->getLoginFromData(packet->getData() + 2, packet->getHeader()._len - 1);
+    String gameName = proto->getLoginFromData(static_cast<char*>(packet->getData()) + 2, packet->getHeader()._len - 1);
 
     QString name = gameName.c_str();
 
