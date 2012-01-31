@@ -26,7 +26,8 @@ void ConnectionSlot::onCall(bool isOnTimeout, Packet *packet, Protocol::Protocol
     _s = Protocol::OK;
     proto->send(packet->getNetwork(), Protocol::STATUS, &_s, sizeof(Protocol::StatusId));
     String login = proto->getLoginFromData(packet->getData(), packet->getHeader()._len);
-    LOGERR << "login" << std::endl;
+    LOGERR << "login (proto->getPointer()) => " << proto->getPointer() << std::endl;
+    if (proto->getPointer() == NULL) {
     if (login == "" || login.length() >= 25)
         ConnectionSlot::sendConnected(proto, packet->getNetwork(), Protocol::FAILED, -1);
     else {
@@ -40,7 +41,8 @@ void ConnectionSlot::onCall(bool isOnTimeout, Packet *packet, Protocol::Protocol
             p->setNetwork(packet->getNetwork());
             ConnectionSlot::sendConnected(proto, packet->getNetwork(), Protocol::OK, p->getId());
         }
-
+}
+    }
         if (proto->getPointer() != NULL) {
             ServerGame *g = reinterpret_cast < ServerGame *> (proto->getPointer());
             Protocol::LoginMapper &loginMapper =
@@ -55,5 +57,4 @@ void ConnectionSlot::onCall(bool isOnTimeout, Packet *packet, Protocol::Protocol
            }
         }
         ServerDataSingle::getInstance()->release();
-    }
 }

@@ -23,8 +23,9 @@ void    DeadSlot::onCall(bool, Packet *p, Protocol::Protocol *proto, void *c)
                                       "h", 1);
             }
             for (unsigned int i = 0; i < 3; i++)
-                game->run();
+                game->run(false);
             game->kill();
+            game->invalidateEvent();
             core->removeGame(game);
         }
     }

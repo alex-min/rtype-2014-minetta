@@ -133,7 +133,7 @@ void    ServerGame::sendStartGame()
     }
 }
 
-void    ServerGame::run()
+void    ServerGame::run(bool loop)
 {
     _gamePort = 1337 + random() % 800;
     LOGERR << "GamePort " << _gamePort << std::endl;
@@ -148,7 +148,7 @@ void    ServerGame::run()
     _net = new Network::Network(&_mainSock);
     _networkManager.setSlotListener(&_proto);
     _networkManager.addNetwork(_net);
-    while (1) {
+    do {
         _networkManager.run(_pool.getMsNextCall(&_proto));
         _pool.autocall(&_proto);
         if (ServerGame::getMapperList().size() < ServerGame::getMaxNbPlayer()) {
@@ -156,7 +156,7 @@ void    ServerGame::run()
         } else {
             generateMonster();
         }
-    }
+    } while (loop);
 }
 
 String const &    ServerGame::getName() const

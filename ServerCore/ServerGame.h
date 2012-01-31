@@ -28,7 +28,8 @@ public:
 
     Network::Network    const *getNetwork() const;
     void    generateGameName();
-    virtual void run();
+    virtual void run() {run(true);}
+    virtual void run(bool loop);
 //pool methods
     void    erase();
     void    erase(ServerCore *);
