@@ -32,6 +32,7 @@ signals:
 
 public:
     ListenServer();
+    void init(const char *ip);
     virtual void run();
     void    sendDead();
     void    sendConnectUdp(std::string const &login);
