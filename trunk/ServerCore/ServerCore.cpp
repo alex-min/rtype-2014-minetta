@@ -32,7 +32,6 @@ ServerGame *ServerCore::getMapByName(String const &gameName) const {
 
 ServerGame*    ServerCore::createGame(String const &gameName)
 {
-    LOG << "game->getName() => " << "LOL" << std::endl;
     ServerGame *gameFromName = ServerCore::getMapByName(gameName);
     if (gameFromName)
         return (NULL);
@@ -63,7 +62,7 @@ void    ServerCore::start(UInt16 port)
     _proto.registerSlotType(Protocol::MOVE, new MoveSlot(), this);
     _proto.registerSlotType(Protocol::LIST_GAME, new ListGameSlot(), this);
     _proto.registerSlotType(Protocol::JOIN_GAME, new JoinGameSlot(), this);
-
+    LOG << "Server is started on port tcp://" << port << std::endl;
     while (1) {
         _networkManager.run(_pool.getMsNextCall(&_proto));
         _pool.autocall(&_proto);

@@ -1,6 +1,6 @@
 #include "PopSlot.h"
 
- void    PopSlot::onCall(bool, Packet *p, Protocol::Protocol *proto, void *c) {
+ void    PopSlot::onCall(bool, Packet *p, Protocol::Protocol *proto, void *) {
 
      unsigned int sizeCount = 0;
      UInt16 x = libc::Memextract<UInt16>(p->getData(), sizeof(UInt16), sizeCount);
